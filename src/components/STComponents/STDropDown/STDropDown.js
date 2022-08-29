@@ -13,7 +13,7 @@ export default function STDropDown({style, children, title}) {
   const [show, setShow] = useState(false);
   const height = useSharedValue(0);
   const opacity = useSharedValue(0);
-  // const rotate = useSharedValue(0);
+  const rotate = useSharedValue(0);
 
   const animation = useAnimatedStyle(() => {
     return {
@@ -22,16 +22,20 @@ export default function STDropDown({style, children, title}) {
     };
   }, []);
 
-  // const animationIcon = useAnimatedStyle(() => {
-  //   return {
-  //     transform: rotate.value,
-  //   };
-  // }, []);
+  const animationIcon = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          rotate: `${rotate.value}deg`,
+        },
+      ],
+    };
+  }, []);
 
   useEffect(() => {
     opacity.value = withTiming(show ? 1 : 0, {duration: 250});
     height.value = withTiming(show ? 100 : 0, {duration: 250});
-    // rotate.value = withTiming(show ? 180 : 0, {duration: 250});
+    rotate.value = withTiming(show ? 180 : 0, {duration: 250});
   }, [show]);
   return (
     <View style={style}>
@@ -41,8 +45,8 @@ export default function STDropDown({style, children, title}) {
         <STText className="text-xl text-gray-600 mr-3">
           {title ? title : 'Mở'}
         </STText>
-        <Animated.View>
-          <Icon name="chevron-down" size={25} />
+        <Animated.View style={animationIcon}>
+          <Icon name="chevron-down" size={25} color="black" />
         </Animated.View>
       </TouchableOpacity>
       <Animated.View style={animation}>{children}</Animated.View>

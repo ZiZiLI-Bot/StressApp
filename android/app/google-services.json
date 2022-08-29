@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "180951980063",
+    "project_id": "stressappmobile",
+    "storage_bucket": "stressappmobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:180951980063:android:e0423191ee242615a21d2a",
+        "android_client_info": {
+          "package_name": "com.stressapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "180951980063-pmd0dq1hoa53lekrdajemamjsf6njet8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.stressapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "180951980063-rbfcu1fi7kar99j479922s4du07brpir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbAes4l2CiPAB8fTH3C9Ydidpj-SBInAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "180951980063-rbfcu1fi7kar99j479922s4du07brpir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
