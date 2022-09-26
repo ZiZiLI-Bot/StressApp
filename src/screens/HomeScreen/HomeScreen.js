@@ -1,21 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import {useNavigation} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {ScrollView, StatusBar} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSelector} from 'react-redux';
 import HomeHeader from '../../container/HomeContainer/HomeHeader';
 import HomeQuiz from '../../container/HomeContainer/HomeQuiz';
 
 export default function HomeScreen() {
-  const navigation = useNavigation();
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
+  const height = useSelector(state => state.screenDimensions.height);
   return (
-    <SafeAreaView className="bg-white">
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+    <SafeAreaView className="bg-white" style={{minHeight: height}}>
+      <StatusBar backgroundColor="white" barStyle="dark-content" />
       <ScrollView className="p-4">
         <HomeHeader />
         <HomeQuiz />

@@ -1,8 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import AuthApi from '../helpers/API/Auth.api';
 import FacebookLogin from '../helpers/SocialLogin/FacebookLogin';
 import GoogleLogin from '../helpers/SocialLogin/GoogleLogin';
+import {storeData} from '../helpers/Store';
 
 const initialState = {
+  userId: null,
   name: null,
   email: null,
   phone: null,
@@ -17,6 +20,7 @@ export const UserReducer = createSlice({
   initialState,
   extraReducers: builder => {
     builder
+      // Google Login
       .addCase(GGlogin.pending, state => {
         console.log('pending');
         state.isLoading = true;
@@ -36,7 +40,7 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = false;
       })
-
+      // Facebook Login
       .addCase(FBlogin.pending, state => {
         console.log('pending');
         state.isLoading = true;
@@ -56,6 +60,26 @@ export const UserReducer = createSlice({
         console.log('rejected');
         state.isLoading = false;
         state.isLogin = false;
+      })
+      //System Login
+      .addCase(SYlogin.pending, state => {
+        console.log('pending');
+        state.isLoading = true;
+      })
+      .addCase(SYlogin.fulfilled, (state, action) => {
+        console.log('fulfilled', action);
+        state.isLoading = false;
+        state.isLogin = true;
+        state.name = action.payload.data.name;
+        state.email = action.payload.data.email;
+        state.phone = action.payload.data.phone;
+        state.avatar = action.payload.data.avatar;
+        state.newUser = action.payload.data.newUser;
+      })
+      .addCase(SYlogin.rejected, state => {
+        console.log('rejected');
+        state.isLoading = false;
+        state.isLogin = false;
       });
   },
 });
@@ -72,6 +96,9 @@ export const FBlogin = createAsyncThunk('user/login/facebook', async () => {
   return res;
 });
 
-// export const {FBLOGIN_SUCCESS, GGLOGIN} = UserReducer.actions;
-
-export default UserReducer.reducer;
+export const SYlogin = createAsyncThunk('user/login/system', async data => {
+  const res = await AuthApi.login(data);
+  await storeData('token', JSON.stringify(res.token));
+  const userData = await AuthApi.getUserById(1);
+  return userData;
+});

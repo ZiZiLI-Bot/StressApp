@@ -1,24 +1,24 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
-import {useSelector} from 'react-redux';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import AppNavigation from './AppNavigation';
 import AuthNavigation from './AuthNavigation';
-import UserNavigation from './UserNavigation';
+import {useWindowDimensions} from 'react-native';
+import {setScreenDimensions} from '../reducers/ScreenDimensions.reduces';
+import {NavigationContainer} from '@react-navigation/native';
+import DrawerNavigation from './DrawerNavigation';
 
-const Stack = createNativeStackNavigator();
 export default function Navigation() {
-  const userData = useSelector(state => state.user);
+  const userLogin = useSelector(state => state.user.isLogin);
+  const {width, height} = useWindowDimensions();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setScreenDimensions({width, height}));
+  }, []);
+
   return (
-    <Stack.Navigator
-      screenOptions={{
-        contentStyle: {
-          backgroundColor: '#FFFFFF',
-        },
-      }}
-      initialRouteName="Home">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Home" component={HomeScreen} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      {userLogin ? <AppNavigation /> : <AuthNavigation />}
+    </NavigationContainer>
   );
 }

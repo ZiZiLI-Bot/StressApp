@@ -1,9 +1,9 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from '../screens/AuthScreen/LoginScreen';
-import RegisterScreen from '../screens/AuthScreen/RegisterScreen';
+import QuizScreen from '../screens/QuizScreen';
+import DrawerNavigation from './DrawerNavigation';
 
-export default function AuthNavigation() {
+export default function AppNavigation() {
   const Stack = createNativeStackNavigator();
   return (
     <Stack.Navigator
@@ -11,9 +11,10 @@ export default function AuthNavigation() {
         headerShown: false,
         statusBarColor: 'white',
         statusBarStyle: 'dark',
+        animationEnabled: true,
       }}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="MainDrawer" component={DrawerNavigation} />
+      <Stack.Screen name="QuizScreen" component={QuizScreen} />
     </Stack.Navigator>
   );
 }

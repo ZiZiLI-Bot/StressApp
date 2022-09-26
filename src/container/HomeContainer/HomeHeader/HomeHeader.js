@@ -1,9 +1,10 @@
 import {View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import STText from '../../../components/STComponents/STText';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import {Drawer} from 'react-native-paper';
 
 export default function HomeHeader() {
   const userData = useSelector(state => state.user);
@@ -12,16 +13,18 @@ export default function HomeHeader() {
     <View>
       <View className="flex-row items-center">
         <View className="flex-1">
-          <Image
-            source={{
-              uri: userData.avatar,
-            }}
-            className="w-14 h-14 rounded-xl"
-          />
+          <View className="w-14 h-14 rounded-xl overflow-hidden">
+            <Image
+              source={{
+                uri: userData.avatar,
+              }}
+              className="w-full h-full"
+            />
+          </View>
         </View>
         <TouchableOpacity
           className="bg-gray-200 w-12 h-12 flex justify-center items-center rounded-xl"
-          onPress={() => navigation.navigate('Login')}>
+          onPress={() => navigation.openDrawer()}>
           <Icon name="menu-open" size={30} color="#5669ff" />
         </TouchableOpacity>
       </View>
@@ -34,3 +37,21 @@ export default function HomeHeader() {
     </View>
   );
 }
+
+const DrawerMenu = () => {
+  const [active, setActive] = useState('');
+  return (
+    <Drawer.Section title="Some title">
+      <Drawer.Item
+        label="First Item"
+        active={active === 'first'}
+        onPress={() => setActive('first')}
+      />
+      <Drawer.Item
+        label="Second Item"
+        active={active === 'second'}
+        onPress={() => setActive('second')}
+      />
+    </Drawer.Section>
+  );
+};

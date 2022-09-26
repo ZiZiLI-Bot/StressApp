@@ -34,6 +34,5 @@ export default function STText(props) {
       color: '#000',
     };
   }
-  console.log(mainStyle);
   return <Text style={mainStyle}>{children}</Text>;
 }

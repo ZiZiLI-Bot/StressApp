@@ -1,6 +1,6 @@
-import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {LogBox} from 'react-native';
+import 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {Provider as StoreProvider} from 'react-redux';
 import {TailwindProvider} from 'tailwindcss-react-native';
@@ -13,9 +13,7 @@ export default function App() {
     <StoreProvider store={store}>
       <TailwindProvider>
         <PaperProvider theme={theme}>
-          <NavigationContainer>
-            <Navigation />
-          </NavigationContainer>
+          <Navigation />
         </PaperProvider>
       </TailwindProvider>
     </StoreProvider>

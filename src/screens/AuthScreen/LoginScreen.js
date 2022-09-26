@@ -1,24 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {Button, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import LoginIcon from '../../../assets/image/LoginIcon.svg';
 import STText from '../../components/STComponents/STText';
-import {FBlogin, GGlogin} from '../../reducers/user.reducer';
+import {FBlogin, GGlogin, SYlogin} from '../../reducers/user.reducer';
 
 export default function LoginScreen() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const height = useSelector(state => state.screenDimensions.height);
   const [showPass, setShowPass] = useState(false);
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
 
   useEffect(() => {
     if (user.isLogin) {
@@ -34,8 +30,13 @@ export default function LoginScreen() {
     dispatch(FBlogin());
   };
 
+  const onLogin = async () => {
+    const data = {password: '123456', username: 'SuperAdmin'};
+    dispatch(SYlogin(data));
+  };
+
   return (
-    <SafeAreaView className="bg-white px-4">
+    <SafeAreaView className="bg-white px-4" style={{minHeight: height}}>
       <ScrollView>
         <View>
           <View className="flex justify-center items-center">
@@ -71,6 +72,7 @@ export default function LoginScreen() {
           <View className="mt-6">
             <TouchableOpacity>
               <Button
+                onPress={onLogin}
                 mode="contained"
                 buttonColor="blue"
                 loading={user.isLoading}
@@ -82,7 +84,7 @@ export default function LoginScreen() {
             <STText className="text-gray-500 text-center my-2">Hoặc</STText>
             <View className="flex space-y-4">
               <TouchableOpacity
-                className="w-full h-12 bg-gray-200 rounded-xl flex-row items-center relative"
+                className="w-full h-12 bg-teal-50 rounded-xl flex-row items-center relative"
                 onPress={() => onGoogleLogin()}>
                 <Image
                   source={{
@@ -95,7 +97,7 @@ export default function LoginScreen() {
                 </STText>
               </TouchableOpacity>
               <TouchableOpacity
-                className="w-full h-12 bg-gray-200 rounded-xl flex-row items-center relative"
+                className="w-full h-12 bg-teal-50 rounded-xl flex-row items-center relative"
                 onPress={() => onFacebookLogin()}>
                 <Image
                   source={{
@@ -109,7 +111,12 @@ export default function LoginScreen() {
               </TouchableOpacity>
             </View>
             <STText className="text-right mt-3 text-gray-400">
-              Chưa có tài khoản? <Text className="text-blue-700">Đăng ký</Text>
+              Chưa có tài khoản?{' '}
+              <Text
+                onPress={() => navigation.navigate('Register')}
+                className="text-blue-700">
+                Đăng ký!
+              </Text>
             </STText>
           </View>
         </View>
