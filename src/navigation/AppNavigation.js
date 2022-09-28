@@ -2,6 +2,8 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import QuizScreen from '../screens/QuizScreen';
 import DrawerNavigation from './DrawerNavigation';
+import ForumScreen from '../screens/ForumScreen/ForumScreen';
+import BottomTabsNavigation from './BottomTabsNavigation';
 
 export default function AppNavigation() {
   const Stack = createNativeStackNavigator();
@@ -14,7 +16,10 @@ export default function AppNavigation() {
         animationEnabled: true,
       }}>
       <Stack.Screen name="MainDrawer" component={DrawerNavigation} />
-      <Stack.Screen name="QuizScreen" component={QuizScreen} />
+      <Stack.Group>
+        <Stack.Screen name="QuizScreen" component={QuizScreen} />
+        <Stack.Screen name="ForumScreen" component={ForumScreen} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }

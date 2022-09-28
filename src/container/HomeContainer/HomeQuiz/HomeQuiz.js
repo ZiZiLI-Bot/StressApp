@@ -36,7 +36,7 @@ export default function HomeQuiz() {
         <View className="w-full bg-gray-200 flex justify-center items-center mt-2 rounded-md">
           <View className="my-4 flex-row">
             {dataEmotion.map((item, index) => (
-              <TouchableOpacity>
+              <TouchableOpacity key={item.name}>
                 <View className="flex items-center justify-center mx-4">
                   <Image
                     key={item.name + index}
@@ -56,12 +56,12 @@ export default function HomeQuiz() {
         <STText className="text-2xl text-black font-bold">
           Trắc nhiệm cá nhân
         </STText>
-        <TouchableOpacity onPress={() => navigation.navigate('QuizScreen')}>
-          <View className="bg-slate-300 w-32 h-36 mt-5 rounded-md flex justify-center items-center">
-            <STText className="text-center text-black">
-              Trắc nhiệm trầm cảm PHQ
-            </STText>
-          </View>
+        <TouchableOpacity
+          className="bg-slate-300 w-32 h-36 mt-5 rounded-md flex justify-center items-center"
+          onPress={() => navigation.navigate('QuizScreen')}>
+          <STText className="text-center text-black">
+            Trắc nhiệm trầm cảm PHQ
+          </STText>
         </TouchableOpacity>
       </View>
     </View>

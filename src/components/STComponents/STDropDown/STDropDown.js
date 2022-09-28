@@ -34,7 +34,7 @@ export default function STDropDown({style, children, title}) {
 
   useEffect(() => {
     opacity.value = withTiming(show ? 1 : 0, {duration: 250});
-    height.value = withTiming(show ? 100 : 0, {duration: 250});
+    height.value = withTiming(show ? 110 : 0, {duration: 250});
     rotate.value = withTiming(show ? 180 : 0, {duration: 250});
   }, [show]);
   return (

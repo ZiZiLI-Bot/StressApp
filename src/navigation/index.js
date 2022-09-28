@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useWindowDimensions} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {setScreenDimensions} from '../reducers/ScreenDimensions.reduces';
 import AppNavigation from './AppNavigation';
 import AuthNavigation from './AuthNavigation';
-import {useWindowDimensions} from 'react-native';
-import {setScreenDimensions} from '../reducers/ScreenDimensions.reduces';
-import {NavigationContainer} from '@react-navigation/native';
-import DrawerNavigation from './DrawerNavigation';
 
 export default function Navigation() {
   const userLogin = useSelector(state => state.user.isLogin);
