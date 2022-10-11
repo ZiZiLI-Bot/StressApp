@@ -3,7 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import ForumList from '../screens/ForumScreen/ForumList';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import ERConnect from '../screens/ERConnect';
+import ERConnect from '../screens/ERConnect/ChatList';
 import CartScreen from '../screens/CartScreen';
 
 const Tab = createBottomTabNavigator();
@@ -50,11 +50,11 @@ export default function BottomTabsNavigation() {
         }}
       />
       <Tab.Screen
-        name="Chợ CĐ"
+        name="Chuyên gia"
         component={CartScreen}
         options={{
           tabBarIcon: ({color, size}) => (
-            <Icon name="cart-outline" color={color} size={27} />
+            <Icon name="doctor" color={color} size={27} />
           ),
         }}
       />

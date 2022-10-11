@@ -7,7 +7,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import LoginIcon from '../../../assets/image/LoginIcon.svg';
 import STText from '../../components/STComponents/STText';
-import {FBlogin, GGlogin, SYlogin} from '../../reducers/user.reducer';
+import AuthApi from '../../helpers/API/Auth.api';
+import FacebookLogin from '../../helpers/SocialLogin/FacebookLogin';
+import GoogleLogin from '../../helpers/SocialLogin/GoogleLogin';
+import {SYlogin} from '../../reducers/user.reducer';
+
+const dataForm = {
+  username: '',
+  password: '',
+};
 
 export default function LoginScreen() {
   const navigation = useNavigation();
@@ -15,6 +23,7 @@ export default function LoginScreen() {
   const user = useSelector(state => state.user);
   const height = useSelector(state => state.screenDimensions.height);
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user.isLogin) {
@@ -23,16 +32,62 @@ export default function LoginScreen() {
   }, [user]);
 
   const onGoogleLogin = async () => {
-    dispatch(GGlogin());
+    setLoading(true);
+    const res = await GoogleLogin();
+    console.log('res', res);
+    if (res) {
+      const infoLoginGG = {
+        password: res.user._user.uid + res.user._user.email,
+        role: 'user',
+        email: res.user._user.email,
+        avatar: res.user._user.photoURL,
+        name: res.user._user.displayName,
+        username: res.user._user.email,
+      };
+      const resLogin = await AuthApi.login(infoLoginGG);
+      if (resLogin.success) {
+        dispatch(SYlogin(infoLoginGG));
+        setLoading(false);
+      } else {
+        const resRegister = await AuthApi.register(infoLoginGG);
+        if (resRegister.success) {
+          dispatch(SYlogin(infoLoginGG));
+          setLoading(false);
+        }
+      }
+    }
   };
 
   const onFacebookLogin = async () => {
-    dispatch(FBlogin());
+    setLoading(true);
+    const res = await FacebookLogin();
+    console.log('res', res);
+    if (res) {
+      const infoLoginFB = {
+        password: res.user._user.uid + res.user._user.email,
+        role: 'user',
+        email: res.user._user.email,
+        avatar: res.additionalUserInfo.profile.picture.data.url,
+        name: res.user._user.displayName,
+        username: res.user._user.email + res.user._user.uid,
+      };
+      const resLogin = await AuthApi.login(infoLoginFB);
+      if (resLogin.success) {
+        dispatch(SYlogin(infoLoginFB));
+        setLoading(false);
+      } else {
+        const resRegister = await AuthApi.register(infoLoginFB);
+        if (resRegister.success) {
+          dispatch(SYlogin(infoLoginFB));
+          setLoading(false);
+        }
+      }
+    }
   };
 
   const onLogin = async () => {
-    const data = {password: '123456', username: 'SuperAdmin'};
-    dispatch(SYlogin(data));
+    const res = dispatch(SYlogin(dataForm));
+    console.log(res);
   };
 
   return (
@@ -47,9 +102,12 @@ export default function LoginScreen() {
           </STText>
           <View className="mt-4 flex space-y-3">
             <TextInput
-              label="User or Email"
+              label="Email"
               mode="outlined"
               left={<TextInput.Icon icon="email" />}
+              onChangeText={text => {
+                dataForm.username = text;
+              }}
             />
             <TextInput
               label="Password"
@@ -62,6 +120,9 @@ export default function LoginScreen() {
                   onPress={() => setShowPass(!showPass)}
                 />
               }
+              onChangeText={text => {
+                dataForm.password = text;
+              }}
             />
           </View>
           <TouchableOpacity>
@@ -75,8 +136,8 @@ export default function LoginScreen() {
                 onPress={onLogin}
                 mode="contained"
                 buttonColor="blue"
-                loading={user.isLoading}
-                disabled={user.isLoading}
+                loading={user.isLoading || loading}
+                disabled={user.isLoading || loading}
                 contentStyle={{height: 50}}>
                 Đăng nhập
               </Button>
@@ -110,7 +171,7 @@ export default function LoginScreen() {
                 </STText>
               </TouchableOpacity>
             </View>
-            <STText className="text-right mt-3 text-gray-400">
+            <STText className="text-right mt-6 text-gray-400 text-base">
               Chưa có tài khoản?{' '}
               <Text
                 onPress={() => navigation.navigate('Register')}

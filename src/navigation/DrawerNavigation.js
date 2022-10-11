@@ -4,6 +4,7 @@ import DrawerContainer from '../container/DrawerContainer';
 import UserInfo from '../screens/UserInfo';
 import BottomTabsNavigation from './BottomTabsNavigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DiaryScreen from '../screens/DiaryScreen';
 
 export default function AppNavigation() {
   const Drawer = createDrawerNavigator();
@@ -24,6 +25,16 @@ export default function AppNavigation() {
             <Icon name="home-outline" size={30} color={color} />
           ),
           title: 'Trang chủ',
+        }}
+      />
+      <Drawer.Screen
+        name="DiaryScreen"
+        component={DiaryScreen}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="book-outline" size={28} color={color} />
+          ),
+          title: 'Nhật ký',
         }}
       />
       <Drawer.Screen

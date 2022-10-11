@@ -9,7 +9,7 @@ import Animated, {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import STText from '../STText';
 
-export default function STDropDown({style, children, title}) {
+export default function STDropDown({style, children, title, heightDrop}) {
   const [show, setShow] = useState(false);
   const height = useSharedValue(0);
   const opacity = useSharedValue(0);
@@ -34,7 +34,7 @@ export default function STDropDown({style, children, title}) {
 
   useEffect(() => {
     opacity.value = withTiming(show ? 1 : 0, {duration: 250});
-    height.value = withTiming(show ? 110 : 0, {duration: 250});
+    height.value = withTiming(show ? heightDrop || 100 : 0, {duration: 250});
     rotate.value = withTiming(show ? 180 : 0, {duration: 250});
   }, [show]);
   return (

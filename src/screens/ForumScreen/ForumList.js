@@ -5,6 +5,7 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import STText from '../../components/STComponents/STText';
+import STDropDown from '../../components/STComponents/STDropDown';
 import Insomnia from '../../../assets/image/insomnia.svg';
 import ReLaxMind from '../../../assets/image/relaxing-mind.svg';
 import BullyPerson from '../../../assets/image/bullying-person.svg';
@@ -128,6 +129,13 @@ export default function ForumList() {
           <STText className="text-3xl font-bold text-black text-center">
             Diễn đàn xã hội
           </STText>
+        </View>
+        <View className="mt-5">
+          {fakeData.map(item => (
+            <Card key={item.id} data={item} />
+          ))}
+        </View>
+        <STDropDown title="Chi tiết" className="mt-3" heightDrop={140}>
           <STText className="mt-2 text-sm text-gray-500 text-center">
             Bạn có thể chia sẻ những gì mình nghĩ, những điều khó nói, những vấn
             đề mà bạn đang gặp phải trong cuộc sống hằng ngày.
@@ -136,12 +144,7 @@ export default function ForumList() {
             Tất nhiên bạn có thể hoàn toàn ẩn danh, hoặc chia sẻ thông tin. Tùy
             vào quyết định của bạn.
           </STText>
-        </View>
-        <View className="mt-5">
-          {fakeData.map(item => (
-            <Card key={item.id} data={item} />
-          ))}
-        </View>
+        </STDropDown>
       </ScrollView>
     </SafeAreaView>
   );

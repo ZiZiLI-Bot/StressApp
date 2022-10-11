@@ -1,14 +1,26 @@
-import {View, Image, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
-import STText from '../../../components/STComponents/STText';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {Image, TouchableOpacity, View} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useSelector} from 'react-redux';
-import {Drawer} from 'react-native-paper';
+import STText from '../../../components/STComponents/STText';
 
 export default function HomeHeader() {
   const userData = useSelector(state => state.user);
   const navigation = useNavigation();
+  const [timeTitle, setTimeTitle] = useState('');
+  const time = dayjs(Date.now()).format('HH');
+  useEffect(() => {
+    if (time < 12) {
+      setTimeTitle('Chào buổi sáng');
+    } else if (time < 18) {
+      setTimeTitle('Buổi chiều tốt lành');
+    } else {
+      setTimeTitle('Chào buổi tối');
+    }
+  }, []);
   return (
     <View>
       <View className="flex-row items-center">
@@ -29,7 +41,7 @@ export default function HomeHeader() {
         </TouchableOpacity>
       </View>
       <View className="pt-12">
-        <STText className="text-2xl text-gray-600">Chào buổi sáng,</STText>
+        <STText className="text-2xl text-gray-600">{timeTitle},</STText>
         <STText font="bold" className="text-3xl text-blue-700">
           {userData.name}
         </STText>
@@ -37,21 +49,3 @@ export default function HomeHeader() {
     </View>
   );
 }
-
-const DrawerMenu = () => {
-  const [active, setActive] = useState('');
-  return (
-    <Drawer.Section title="Some title">
-      <Drawer.Item
-        label="First Item"
-        active={active === 'first'}
-        onPress={() => setActive('first')}
-      />
-      <Drawer.Item
-        label="Second Item"
-        active={active === 'second'}
-        onPress={() => setActive('second')}
-      />
-    </Drawer.Section>
-  );
-};
