@@ -4,7 +4,8 @@ import DrawerContainer from '../container/DrawerContainer';
 import UserInfo from '../screens/UserInfo';
 import BottomTabsNavigation from './BottomTabsNavigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import DiaryScreen from '../screens/DiaryScreen';
+import DiaryScreen from '../screens/DiaryScreen/DiaryList';
+import IdentifyScreen from '../screens/IdentifyScreen';
 
 export default function AppNavigation() {
   const Drawer = createDrawerNavigator();
@@ -38,6 +39,16 @@ export default function AppNavigation() {
         }}
       />
       <Drawer.Screen
+        name="IdentifyScreen"
+        component={IdentifyScreen}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="information-variant" size={28} color={color} />
+          ),
+          title: 'Nhận định cơ bản',
+        }}
+      />
+      {/* <Drawer.Screen
         name="UserInfo"
         component={UserInfo}
         options={{
@@ -46,7 +57,7 @@ export default function AppNavigation() {
           ),
           title: 'Thông tin tài khoản',
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }

@@ -6,16 +6,16 @@ export default function useFireStore(collection, condition) {
   React.useEffect(() => {
     let collectionRef = firestore().collection(collection).orderBy('createdAt');
 
-    // if (condition) {
-    //   if (!condition.compareValue || !condition.compareValue.length) {
-    //     return;
-    //   }
-    //   collectionRef = collectionRef.where(
-    //     condition.fieldName,
-    //     condition.operator,
-    //     condition.compareValue,
-    //   );
-    // }
+    if (condition) {
+      if (!condition.compareValue || !condition.compareValue.length) {
+        return;
+      }
+      collectionRef = collectionRef.where(
+        condition.fieldName,
+        condition.operator,
+        condition.compareValue,
+      );
+    }
 
     const unsubscribe = collectionRef.onSnapshot(snapshot => {
       const documents = snapshot?.docs?.map(doc => {

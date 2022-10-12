@@ -4,7 +4,8 @@ import HomeScreen from '../screens/HomeScreen';
 import ForumList from '../screens/ForumScreen/ForumList';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ERConnect from '../screens/ERConnect/ChatList';
-import CartScreen from '../screens/CartScreen';
+import ExpertsScreen from '../screens/ExpertsScreen/ExpertsList';
+import CourseList from '../screens/CourseScreen/CourseList';
 
 const Tab = createBottomTabNavigator();
 export default function BottomTabsNavigation() {
@@ -23,9 +24,10 @@ export default function BottomTabsNavigation() {
         tabBarActiveTintColor: '#1374a7',
       }}>
       <Tab.Screen
-        name="Trang chủ"
+        name="Home"
         component={HomeScreen}
         options={{
+          title: 'Trang chủ',
           tabBarIcon: ({color, size}) => (
             <Icon name="home-outline" color={color} size={27} />
           ),
@@ -50,8 +52,18 @@ export default function BottomTabsNavigation() {
         }}
       />
       <Tab.Screen
+        name="CourseScreen"
+        component={CourseList}
+        options={{
+          title: 'Khóa học',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="book-outline" color={color} size={27} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="Chuyên gia"
-        component={CartScreen}
+        component={ExpertsScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="doctor" color={color} size={27} />

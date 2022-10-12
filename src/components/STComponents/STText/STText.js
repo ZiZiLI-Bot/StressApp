@@ -2,7 +2,7 @@ import React from 'react';
 import {Text} from 'react-native';
 
 export default function STText(props) {
-  const {style, children, font} = props;
+  const {style, children, font, numberOfLines, onPress} = props;
   let TempFont;
   switch (font) {
     case 'bold':
@@ -34,5 +34,9 @@ export default function STText(props) {
       color: '#000',
     };
   }
-  return <Text style={mainStyle}>{children}</Text>;
+  return (
+    <Text onPress={onPress} style={mainStyle} numberOfLines={numberOfLines}>
+      {children}
+    </Text>
+  );
 }

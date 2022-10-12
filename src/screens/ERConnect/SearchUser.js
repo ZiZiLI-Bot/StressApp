@@ -10,7 +10,6 @@ import {addDocument} from '../../helpers/FireService';
 export default function SearchUser({navigation}) {
   const user = useSelector(state => state.user);
   const [searchUser, setSearchUser] = React.useState('');
-  const id = React.useId();
 
   const handleChangeSearch = text => {
     if (text === '') {
@@ -41,7 +40,6 @@ export default function SearchUser({navigation}) {
       members: [userInfo, userTarget],
       createAt: Date.now(),
     };
-    console.log(roomInfo);
     await addDocument('rooms', roomInfo);
     navigation.navigate('ChatRoom', {
       roomsData: roomInfo,
