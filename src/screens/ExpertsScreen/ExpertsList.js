@@ -7,14 +7,9 @@ import STText from '../../components/STComponents/STText';
 const dataDoctor = [
   {
     id: 0,
-    name: 'Admin',
-    avatar: 'https://day.js.org/img/logo.png',
-    address: 'Chuyên khoa tâm lý bệnh viện đại học Phenikaa',
-  },
-  {
-    id: 1,
-    name: 'Admin - 2',
-    avatar: 'https://day.js.org/img/logo.png',
+    name: 'Nguyễn Đình Nam',
+    avatar:
+      'https://lh3.googleusercontent.com/a/ALm5wu2GHxgfvHgDZ7Z89gK4QYfXj2MFJtxVQPO24OvFqw=s96-c',
     address: 'Chuyên khoa tâm lý bệnh viện đại học Phenikaa',
   },
 ];

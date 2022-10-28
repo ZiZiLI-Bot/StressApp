@@ -1,6 +1,7 @@
 import React from 'react';
 import {LogBox} from 'react-native';
 import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {Provider as StoreProvider} from 'react-redux';
 import {TailwindProvider} from 'tailwindcss-react-native';
@@ -10,14 +11,16 @@ import theme from './theme';
 
 export default function App() {
   return (
-    <StoreProvider store={store}>
-      <TailwindProvider>
-        <PaperProvider theme={theme}>
-          <Navigation />
-        </PaperProvider>
-      </TailwindProvider>
-    </StoreProvider>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <StoreProvider store={store}>
+        <TailwindProvider>
+          <PaperProvider theme={theme}>
+            <Navigation />
+          </PaperProvider>
+        </TailwindProvider>
+      </StoreProvider>
+    </GestureHandlerRootView>
   );
 }
 
-LogBox.ignoreLogs(['Require cycle:']);
+LogBox.ignoreLogs(['Require cycle:'], ['Remote debugger:']);
