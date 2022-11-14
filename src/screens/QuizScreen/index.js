@@ -9,135 +9,78 @@ import BackIcon from '../../components/BackIcon/BackIcon';
 import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import {storeData} from '../../helpers/Store';
+import QuestionsApi from '../../helpers/API/QuestionsAPI';
 
-const dataQuiz = [
-  {
-    id: 0,
-    question: 'Câu hỏi 1',
-    title: 'Ít hứng thú hoặc là không có niềm vui thích làm việc gì?',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 1,
-    question: 'Câu hỏi 2',
-    title: 'Cảm thấy chán nản kiệt sức, trầm cảm, hoặc tuyệt vọng?',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 2,
-    question: 'Câu hỏi 3',
-    title: 'Khó ngủ, ngủ không lâu hoặc ngủ quá nhiều',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 3,
-    question: 'Câu hỏi 4',
-    title: 'Cảm thấy mệt mỏi hoặc kém năng lực hoạt động',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 4,
-    question: 'Câu hỏi 5',
-    title: 'Ăn kém ngon hoặc ăn quá nhiều',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 5,
-    question: 'Câu hỏi 6',
-    title:
-      'Cảm thấy mình tệ, cho rằng mình là người thất bại hoặc đã làm cho chính mình hay gia đình thất vọng',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 6,
-    question: 'Câu hỏi 7',
-    title: 'Khó tập trung làm việc gì, ví dụ như là đọc báo hay xem tivi',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 7,
-    question: 'Câu hỏi 8',
-    title:
-      'Đi đứng hoặc nói năng chậm chạp đến nổi mọi người lưu ý. Hoặc ngược lại quá bồn chồn, đứng ngồi không yên cho nên bạn đã đi quanh quẩn nhiều hơn bình thường',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-  {
-    id: 8,
-    question: 'Câu hỏi 9',
-    title:
-      'Có ý nghĩ làm điều gì đó gây đau đớn cho bản thân hoặc nghĩ rằng thà mình chết đi cho rồi',
-    options: [
-      {id: 0, title: 'Không lần nào cả', point: 0},
-      {id: 1, title: 'Một vài ngày', point: 1},
-      {id: 2, title: 'Nhiều hơn phân nữa số thời gian', point: 2},
-      {id: 3, title: 'Gần như mỗi ngày', point: 3},
-    ],
-  },
-];
+const sort = (a, b) => {
+  return a.id - b.id;
+};
 
-export default function QuizScreen() {
+export default function QuizScreen({route}) {
+  const {item} = route.params;
   const [start, setStart] = useState(false);
   const height = useSelector(state => state.screenDimensions.height);
   const navigate = useNavigation();
+  const [questions, setQuestions] = useState([]);
+  const [resultJudge, setResultJudge] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const getDataQuestions = async () => {
+      setLoading(true);
+      const data = await QuestionsApi.getQuestionsById(item.id);
+      setResultJudge(data.data.judges.sort(sort));
+      let dataQuiz = [];
+      let answers = [];
+      if (data.data) {
+        data.data.answers?.map((item, index) => {
+          answers.push({
+            id: index,
+            title: item.answer,
+            point: item.score_stress,
+          });
+        });
+        data.data.questions?.map((item, index) => {
+          dataQuiz.push({
+            id: index,
+            question: `Câu hỏi ${index + 1}`,
+            title: item.question,
+            options: [...answers],
+          });
+        });
+      }
+      setQuestions(dataQuiz);
+      setLoading(false);
+    };
+    getDataQuestions();
+  }, []);
+
   return (
     <SafeAreaView className="p-4 bg-white" style={{minHeight: height}}>
       <BackIcon onPress={() => navigate.goBack()} className="mb-4" />
-      {!start ? <PreViewQuiz startQuiz={setStart} /> : <Quiz data={dataQuiz} />}
+      {!start ? (
+        <PreViewQuiz
+          startQuiz={setStart}
+          QuizPreview={item}
+          loading={loading}
+        />
+      ) : (
+        <Quiz dataQuiz={questions} resultJudge={resultJudge} />
+      )}
     </SafeAreaView>
   );
 }
 
-const PreViewQuiz = ({startQuiz}) => {
+const PreViewQuiz = ({startQuiz, QuizPreview, loading}) => {
   return (
     <View>
       <STText className="text-2xl mt-6 font-bold text-black text-center">
-        Bài test thang đánh giá lo âu - trầm cảm PHQ-9
-      </STText>
-      <STText className="text-center text-lg mt-2 text-black">
-        Stress (Dass 9)
+        Bài test thang đánh giá {QuizPreview.name}
       </STText>
       <STText className="text-center mt-2 text-gray-500">
         Bài đánh giá dành cho độ tuổi từ 14 trở lên
+      </STText>
+      <STText className="text-center mt-2 text-gray-500">
+        {QuizPreview.overview}
       </STText>
       <STText className="mt-6 text-black text-lg">
         Hãy cho chúng tôi biết, trong vòng 2 tuần vừa qua, có bao nhiêu lần bạn
@@ -148,7 +91,11 @@ const PreViewQuiz = ({startQuiz}) => {
         các tư vấn phù hợp với bạn.
       </STText>
       <TouchableOpacity onPress={() => startQuiz(true)}>
-        <Button mode="contained" className="mt-6">
+        <Button
+          mode="contained"
+          className="mt-6"
+          loading={loading}
+          disabled={loading}>
           Bắt đầu làm bài đánh giá
         </Button>
       </TouchableOpacity>
@@ -156,22 +103,56 @@ const PreViewQuiz = ({startQuiz}) => {
   );
 };
 
-const Quiz = () => {
+const Quiz = ({dataQuiz, resultJudge}) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [checked, setChecked] = useState(0);
   const [point, setPoint] = useState(0);
+
   const resultQuiz = () => {
-    if (point <= 4) {
-      return 'Bạn hoàn toàn bình thường';
-    } else if (point <= 9) {
-      return 'Bạn ở mức trầm cảm tối thiểu';
-    } else if (point <= 14) {
-      return 'Đây là mức trầm cảm nhẹ. Bạn nên tìm kiếm sự hỗ trợ';
-    } else if (point <= 19) {
-      return 'Đây là trầm cảm trung bình. Bạn nên tìm kiếm sự hỗ trợ';
-    } else {
-      return 'Chuẩn đoán kết quả trầm cảm nặng. Bạn nên đến gặp bác sĩ chuyên khoa sức khỏe tâm thần, chuyên gia tâm lý hoặc khám từ xa để được tư vấn và điều trị';
-    }
+    let result = [
+      {id: 1, resultQuiz: 'anxiety', result: null},
+      {id: 2, resultQuiz: 'depess', result: null},
+      {id: 3, resultQuiz: 'stress', result: null},
+    ];
+    resultJudge.map(item => {
+      if (
+        item.score_anxiety_max !== 9999 &&
+        item.score_anxiety_min !== 9999 &&
+        point >= item.score_anxiety_min &&
+        point <= item.score_anxiety_max
+      ) {
+        result[0].result = item.advice_anxiety;
+      }
+      if (
+        item.score_depess_max !== 9999 &&
+        item.score_depess_min !== 9999 &&
+        point >= item.score_depess_min &&
+        point <= item.score_depess_max
+      ) {
+        result[1].result = item.advice_depess;
+      }
+      if (
+        item.score_stress_max !== 9999 &&
+        item.score_stress_min !== 9999 &&
+        point >= item.score_stress_min &&
+        point <= item.score_stress_max
+      ) {
+        result[2].result = item.advice_stress;
+      }
+    });
+    const resultFilter = result.filter(item => item.result !== null);
+    resultFilter.map(item => {
+      if (item.resultQuiz === 'anxiety') {
+        item.resultQuiz = 'Lo âu';
+      }
+      if (item.resultQuiz === 'depess') {
+        item.resultQuiz = 'Trầm cảm';
+      }
+      if (item.resultQuiz === 'stress') {
+        item.resultQuiz = 'Stress';
+      }
+    });
+    return resultFilter;
   };
   useEffect(() => {
     const updateData = async () => {
@@ -213,7 +194,7 @@ const Quiz = () => {
                     />
                     <STText
                       onPress={() => setChecked(item.id)}
-                      className="text-lg text-black">
+                      className="text-lg text-black w-5/6">
                       {item.title}
                     </STText>
                   </TouchableOpacity>
@@ -238,11 +219,14 @@ const Quiz = () => {
             Dựa vào kết quả khảo sát vừa rồi, chúng tôi có thể đưa ra các đánh
             gia sau:
           </STText>
-          <View>
-            <STText className="text-lg text-blue-600 mt-6">
-              {resultQuiz()}
-            </STText>
-          </View>
+          {resultQuiz().map(item => (
+            <View key={item.id}>
+              <STText className="text-lg mt-6 text-black">
+                Mức độ {item.resultQuiz} của bạn hiện tại:
+              </STText>
+              <STText className="text-lg text-blue-600">{item.result}</STText>
+            </View>
+          ))}
         </View>
       )}
     </View>

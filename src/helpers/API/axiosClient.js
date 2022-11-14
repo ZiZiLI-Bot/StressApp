@@ -3,7 +3,7 @@ import qs from 'qs';
 import {getData} from '../Store';
 
 const axiosClient = axios.create({
-  baseURL: 'https://rescuse-emotional.up.railway.app/api/v1/',
+  baseURL: 'http://tuanhung.site:19000/api/v1/',
   headers: {
     'content-type': 'application/json',
   },
@@ -23,14 +23,16 @@ axiosClient.interceptors.request.use(async config => {
 
 axiosClient.interceptors.response.use(
   response => {
-    if (response && response.data) {
+    if (response.data.success) {
       return response.data;
+    } else {
+      console.error('Error:', response.data.message);
+      return null;
     }
-    return response;
   },
   error => {
     console.error(error.response);
-    return error.response;
+    return null;
   },
 );
 export default axiosClient;

@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ERConnect from '../screens/ERConnect/ChatList';
 import ExpertsScreen from '../screens/ExpertsScreen/ExpertsList';
 import CourseList from '../screens/CourseScreen/CourseList';
+import PodCastScreen from '../screens/PodCastScreen';
 
 const Tab = createBottomTabNavigator();
 export default function BottomTabsNavigation() {
@@ -51,7 +52,7 @@ export default function BottomTabsNavigation() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="CourseScreen"
         component={CourseList}
         options={{
@@ -67,6 +68,15 @@ export default function BottomTabsNavigation() {
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="doctor" color={color} size={27} />
+          ),
+        }}
+      /> */}
+      <Tab.Screen
+        name="PodCast"
+        component={PodCastScreen}
+        options={{
+          tabBarIcon: ({color, size}) => (
+            <Icon name="podcast" color={color} size={27} />
           ),
         }}
       />

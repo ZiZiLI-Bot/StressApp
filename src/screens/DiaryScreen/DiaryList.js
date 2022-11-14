@@ -57,8 +57,8 @@ export default function DiaryScreen({navigation}) {
               {diary.diary.length > 0 ? (
                 <DiaryContainer diary={diary.diary} navigation={navigation} />
               ) : (
-                <View className="w-full h-full flex-1 justify-center items-center">
-                  <STText className="text-2xl text-black">
+                <View className="w-full h-96 flex-1 justify-center items-center">
+                  <STText font="bold" className="text-2xl text-black">
                     Chưa có bản ghi nào
                   </STText>
                 </View>

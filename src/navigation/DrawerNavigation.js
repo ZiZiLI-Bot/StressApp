@@ -6,6 +6,8 @@ import BottomTabsNavigation from './BottomTabsNavigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import DiaryScreen from '../screens/DiaryScreen/DiaryList';
 import IdentifyScreen from '../screens/IdentifyScreen';
+import CourseList from '../screens/CourseScreen/CourseList';
+import ExpertsScreen from '../screens/ExpertsScreen/ExpertsList';
 
 export default function AppNavigation() {
   const Drawer = createDrawerNavigator();
@@ -35,7 +37,25 @@ export default function AppNavigation() {
           drawerIcon: ({color}) => (
             <Icon name="book-outline" size={28} color={color} />
           ),
-          title: 'Nhật ký',
+          title: 'Nhật ký cá nhân',
+        }}
+      />
+      <Drawer.Screen
+        name="CourseScreen"
+        component={CourseList}
+        options={{
+          drawerIcon: ({color}) => <Icon name="yoga" size={28} color={color} />,
+          title: 'Khóa học',
+        }}
+      />
+      <Drawer.Screen
+        name="ExpertsScreen"
+        component={ExpertsScreen}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="doctor" size={28} color={color} />
+          ),
+          title: 'Chuyên gia',
         }}
       />
       <Drawer.Screen

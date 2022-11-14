@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import React, {useState} from 'react';
+import {useEffect} from 'react';
 import {View} from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
@@ -9,6 +10,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
 import STText from '../../components/STComponents/STText';
 import STPicker from '../../components/STPicker';
+import {getData} from '../../helpers/Store';
+import OpenURL from '../../helpers/UniversalLink';
 import {SYupdate} from '../../reducers/user.reducer';
 
 let formatData = {
@@ -19,7 +22,19 @@ let formatData = {
   gender: '',
 };
 
+const PrivacyPolicy =
+  'https://www.termsfeed.com/live/0542a8d9-18e2-4533-8c39-ec564f0e82cc?fbclid=IwAR0WiZ5f7EUEwEWvjfsykb__cQW1IMkCNIhBg3YJ0iBdONdP-ewBevwng_U';
+
 export default function UpdateInfoScreen({route}) {
+  useEffect(() => {
+    const checkLogin = async () => {
+      const token = await getData('token');
+      if (token) {
+        console.log('token', token);
+      }
+    };
+    checkLogin();
+  }, []);
   const preData = route.params.data;
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
@@ -37,7 +52,6 @@ export default function UpdateInfoScreen({route}) {
     const source = result.assets[0];
     setAvatarImage(source);
   };
-
   const handlerSubmit = async () => {
     const dataInput = {
       ...formatData,
@@ -81,6 +95,9 @@ export default function UpdateInfoScreen({route}) {
                   disabled={user.isLoading}>
                   Cập nhật hình đại diện
                 </Button>
+                <STText className="text-center text-gray-500 mt-1">
+                  Hỗi trợ định dạng GIF, PNG, JPG, JPEG
+                </STText>
               </TouchableOpacity>
             </View>
           </View>
@@ -152,6 +169,7 @@ export default function UpdateInfoScreen({route}) {
                 items={[
                   {label: 'Nam', value: 'male'},
                   {label: 'Nữ', value: 'female'},
+                  {label: 'Khác', value: 'other'},
                 ]}
                 title="Giới tính"
                 value={gender}
@@ -179,7 +197,13 @@ export default function UpdateInfoScreen({route}) {
               }}
             />
             <STText className="text-gray-500">
-              Tôi đã đọc và hiểu toàn bộ nội dung điều khoản sử dụng
+              Tôi đã đọc và hiểu toàn bộ nội dung{' '}
+              <STText
+                bold
+                className="text-blue-700"
+                onPress={() => OpenURL(PrivacyPolicy)}>
+                Điều khoản
+              </STText>{' '}
             </STText>
           </View>
           <Button

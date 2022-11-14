@@ -32,9 +32,14 @@ export default function LoginScreen() {
   }, [user]);
 
   const onGoogleLogin = async () => {
-    setLoading(true);
-    const res = await GoogleLogin();
-    console.log('res', res);
+    let res;
+    try {
+      setLoading(true);
+      res = await GoogleLogin();
+    } catch (error) {
+      setLoading(false);
+      console.log('error', error);
+    }
     if (res) {
       const infoLoginGG = {
         password: res.user._user.uid + res.user._user.email,
@@ -45,7 +50,7 @@ export default function LoginScreen() {
         username: res.user._user.email,
       };
       const resLogin = await AuthApi.login(infoLoginGG);
-      if (resLogin.success) {
+      if (resLogin) {
         dispatch(SYlogin(infoLoginGG));
         setLoading(false);
       } else {
@@ -59,9 +64,14 @@ export default function LoginScreen() {
   };
 
   const onFacebookLogin = async () => {
-    setLoading(true);
-    const res = await FacebookLogin();
-    console.log('res', res);
+    let res;
+    try {
+      setLoading(true);
+      res = await FacebookLogin();
+    } catch (error) {
+      setLoading(false);
+      console.log('error', error);
+    }
     if (res) {
       const infoLoginFB = {
         password: res.user._user.uid + res.user._user.email,
@@ -72,7 +82,7 @@ export default function LoginScreen() {
         username: res.user._user.email + res.user._user.uid,
       };
       const resLogin = await AuthApi.login(infoLoginFB);
-      if (resLogin.success) {
+      if (resLogin) {
         dispatch(SYlogin(infoLoginFB));
         setLoading(false);
       } else {

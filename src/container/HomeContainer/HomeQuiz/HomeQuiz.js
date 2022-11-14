@@ -1,10 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
-import {Image, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
 import {Button} from 'react-native-paper';
 import STDropDown from '../../../components/STComponents/STDropDown';
 import STText from '../../../components/STComponents/STText';
+import {useSelector, useDispatch} from 'react-redux';
+import {getListQuestions} from '../../../reducers/questions.reducers';
+import {useEffect} from 'react';
 
 const dataEmotion = [
   {
@@ -37,6 +41,12 @@ const dataEmotion = [
 export default function HomeQuiz() {
   const navigation = useNavigation();
   const [selectedEmotion, setSelectedEmotion] = React.useState(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListQuestions());
+  }, []);
+  const questionsList = useSelector(state => state.questions.listQuestions);
+
   return (
     <View className="mt-8 py-2">
       <STDropDown title="Hiện tại bạn cảm thấy thế nào ?" heightDrop={90}>
@@ -52,13 +62,21 @@ export default function HomeQuiz() {
         <STText font="bold" className="text-2xl text-black">
           Trắc nhiệm cá nhân
         </STText>
-        <TouchableOpacity
-          className="bg-slate-300 w-32 h-36 mt-5 rounded-md flex justify-center items-center"
-          onPress={() => navigation.navigate('QuizScreen')}>
-          <STText className="text-center text-black">
-            Trắc nhiệm trầm cảm PHQ
-          </STText>
-        </TouchableOpacity>
+        <ScrollView
+          horizontal
+          contentContainerStyle={{paddingHorizontal: 2, paddingVertical: 5}}
+          showsHorizontalScrollIndicator={true}>
+          {questionsList.map(item => (
+            <TouchableOpacity
+              key={item.id}
+              className="bg-slate-300 w-32 h-36 mt-3 mr-4 rounded-md flex justify-center items-center"
+              onPress={() => navigation.navigate('QuizScreen', {item})}>
+              <STText className="text-center text-black">
+                Bài trắc nghiệm {item.name}
+              </STText>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );

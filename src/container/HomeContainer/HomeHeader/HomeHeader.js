@@ -26,12 +26,14 @@ export default function HomeHeader() {
       <View className="flex-row items-center">
         <View className="flex-1">
           <View className="w-14 h-14 rounded-xl overflow-hidden">
-            <Image
-              source={{
-                uri: userData.avatar,
-              }}
-              className="w-full h-full"
-            />
+            <TouchableOpacity onPress={() => navigation.openDrawer()}>
+              <Image
+                source={{
+                  uri: userData.avatar,
+                }}
+                className="w-full h-full"
+              />
+            </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity

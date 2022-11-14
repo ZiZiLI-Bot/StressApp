@@ -1,7 +1,7 @@
 import storage from '@react-native-firebase/storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import AuthApi from '../helpers/API/Auth.api';
-import {storeData} from '../helpers/Store';
+import {storeData, getData} from '../helpers/Store';
 import {navigationRef} from '../navigation';
 
 const uploadImageToFirebase = async image => {
@@ -77,29 +77,32 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = false;
       });
+    //System Login with JWT
   },
 });
 
 export const SYlogin = createAsyncThunk('user/login/system', async data => {
   const res = await AuthApi.login(data);
-  await storeData('token', JSON.stringify(res.token));
-  const userData = await AuthApi.getUserById(res.userId);
-  const allUsers = await AuthApi.getAllUsers();
-  if (!userData.data) {
-    const MissData = {
-      isLogin: false,
-      email: data.email,
-      userId: res.userId,
-    };
-    navigationRef.navigate('UpdateInfo', {data});
-    return MissData;
-  } else {
-    const fullData = {
-      isLogin: true,
-      allUsers: allUsers.data,
-      ...userData.data,
-    };
-    return fullData;
+  if (res) {
+    await storeData('token', JSON.stringify(res.token));
+    const userData = await AuthApi.getUserById(res.userId);
+    const allUsers = await AuthApi.getAllUsers();
+    if (!userData) {
+      const MissData = {
+        isLogin: false,
+        email: data.email,
+        userId: res.userId,
+      };
+      navigationRef.navigate('UpdateInfo', {data});
+      return MissData;
+    } else {
+      const fullData = {
+        isLogin: true,
+        allUsers: allUsers.data,
+        ...userData.data,
+      };
+      return fullData;
+    }
   }
 });
 
@@ -108,10 +111,19 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
   const allUsers = await AuthApi.getAllUsers();
   const userData = {
     ...data,
+    user_id: data.userId,
     avatar: AvatarURL,
     allUsers: allUsers.data,
   };
+  console.log('data', data);
   const res = await AuthApi.updateInfo(userData);
-  console.log(res);
-  return userData;
+  if (res) {
+    return userData;
+  }
+});
+
+export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
+  if (getData('token')) {
+    console.log('token', getData('token'));
+  }
 });

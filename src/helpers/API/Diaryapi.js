@@ -1,19 +1,19 @@
 import axiosClient from './axiosClient';
 
 const DiaryApi = {
-  getById: async id => {
+  getById: id => {
     const url = `/notion/profile/${id}`;
     return axiosClient.get(url);
   },
-  createDiary: async data => {
+  createDiary: data => {
     const url = '/notion/create';
     return axiosClient.post(url, data);
   },
-  deleteDiary: async id => {
+  deleteDiary: id => {
     const url = `/notion/delete/${id}`;
     return axiosClient.delete(url);
   },
-  updateDiary: async data => {
+  updateDiary: data => {
     const url = '/notion/update';
     return axiosClient.put(url, data);
   },

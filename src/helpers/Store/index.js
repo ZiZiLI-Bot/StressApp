@@ -18,6 +18,7 @@ const getData = async key => {
     }
   } catch (e) {
     console.log(e);
+    return null;
   }
 };
 

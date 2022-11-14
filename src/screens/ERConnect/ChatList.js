@@ -1,12 +1,11 @@
 import firestore from '@react-native-firebase/firestore';
-import React, {useEffect, useState, useId} from 'react';
-import {TouchableOpacity, View, ScrollView} from 'react-native';
-import {Avatar, Searchbar} from 'react-native-paper';
+import React, {useEffect, useId, useState} from 'react';
+import {ScrollView, TouchableOpacity, View} from 'react-native';
+import {Avatar} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import BackIcon from '../../components/BackIcon/BackIcon';
 import STText from '../../components/STComponents/STText';
-import {addDocument} from '../../helpers/FireService';
 
 export default function ERConnect({navigation}) {
   const user = useSelector(state => state.user);
@@ -47,7 +46,9 @@ export default function ERConnect({navigation}) {
     <ScrollView className="p-3 bg-white">
       <View className="flex-row items-center">
         <BackIcon onPress={() => navigation.goBack()} className="mr-3" />
-        <Avatar.Image source={{uri: user.avatar}} size={47} />
+        <View className="overflow-hidden rounded-full">
+          <Avatar.Image source={{uri: user.avatar}} size={47} />
+        </View>
         <STText font="bold" className="text-xl text-black ml-3">
           ER Connect
         </STText>

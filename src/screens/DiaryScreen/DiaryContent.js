@@ -6,6 +6,7 @@ import BackIcon from '../../components/BackIcon';
 import {Button, TextInput} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {createDiary, updateDiary} from '../../reducers';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default function DiaryContent({route, navigation}) {
   const {data} = route.params;
@@ -48,40 +49,42 @@ export default function DiaryContent({route, navigation}) {
   };
 
   return (
-    <SafeAreaView className="p-4 bg-white" style={{minHeight: height}}>
-      <View className="flex-row items-center">
-        <BackIcon className="mr-4" onPress={() => navigation.goBack()} />
-        <STText className="text-2xl text-black font-bold">Nhật ký</STText>
-      </View>
-      <View className="mt-10">
-        <STText className="text-xl text-black">Tiêu đề:</STText>
-        <TextInput
-          mode="outlined"
-          multiline={true}
-          numberOfLines={2}
-          value={title}
-          onChangeText={text => setTitle(text)}
-        />
-      </View>
-      <View className="mt-6">
-        <STText className="text-xl text-black">Nội dung:</STText>
-        <TextInput
-          mode="outlined"
-          multiline={true}
-          value={content}
-          numberOfLines={12}
-          onChangeText={text => setContent(text)}
-        />
-      </View>
-      <View className="mt-4">
-        <Button
-          mode="contained-tonal"
-          onPress={onSubmit}
-          disabled={diary.isLoading}
-          loading={diary.isLoading}>
-          Cập nhật
-        </Button>
-      </View>
+    <SafeAreaView className="p-4 bg-white">
+      <ScrollView className="w-full h-full bg-white">
+        <View className="flex-row items-center">
+          <BackIcon className="mr-4" onPress={() => navigation.goBack()} />
+          <STText className="text-2xl text-black font-bold">Nhật ký</STText>
+        </View>
+        <View className="mt-10">
+          <STText className="text-xl text-black">Tiêu đề:</STText>
+          <TextInput
+            mode="outlined"
+            multiline={true}
+            numberOfLines={2}
+            value={title}
+            onChangeText={text => setTitle(text)}
+          />
+        </View>
+        <View className="mt-6">
+          <STText className="text-xl text-black">Nội dung:</STText>
+          <TextInput
+            mode="outlined"
+            multiline={true}
+            value={content}
+            numberOfLines={18}
+            onChangeText={text => setContent(text)}
+          />
+        </View>
+        <View className="mt-4">
+          <Button
+            mode="contained-tonal"
+            onPress={onSubmit}
+            disabled={diary.isLoading}
+            loading={diary.isLoading}>
+            Cập nhật
+          </Button>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
