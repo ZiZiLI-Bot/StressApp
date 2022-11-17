@@ -15,7 +15,7 @@ axiosClient.interceptors.request.use(async config => {
   await getData('token').then(res => (token = res));
   if (token) {
     config.headers = {
-      Authorization: JSON.parse(token),
+      Authorization: token,
     };
   }
   return config;

@@ -27,4 +27,5 @@ export default function App() {
   );
 }
 
-LogBox.ignoreLogs(['Require cycle:'], ['Remote debugger:']);
+LogBox.ignoreLogs(['Require cycle:']);
+LogBox.ignoreLogs(['Remote debugger']);

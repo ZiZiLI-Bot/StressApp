@@ -12,7 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.stressapp.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.airbnb.android.react.lottie.LottiePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -30,6 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
       // example:
       // packages.add(new MyReactNativePackage());
       // packages.add(new SplashScreenReactPackage());
+      packages.add(new LottiePackage());
       return packages;
     }
 

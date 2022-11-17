@@ -266,6 +266,10 @@ dependencies {
 
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
 
+    // implementation project(':@react-native-async-storage')
+
+    implementation project(':lottie-react-native')
+
     implementation 'com.facebook.fresco:fresco:2.0.0'
     // For animated GIF support
 

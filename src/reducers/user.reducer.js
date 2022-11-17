@@ -76,22 +76,41 @@ export const UserReducer = createSlice({
       .addCase(SYupdate.rejected, state => {
         state.isLoading = false;
         state.isLogin = false;
+      })
+      //System Login with JWT
+      .addCase(SYloginJWT.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(SYloginJWT.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isLogin = true;
+        state.userId = action.payload?.userId;
+        state.name = action.payload?.name;
+        state.email = action.payload?.email;
+        state.phone = action.payload?.phone;
+        state.avatar = action.payload?.avatar;
+        state.newUser = action.payload?.newUser;
+        state.real_name = action.payload?.real_name;
+        state.allUsers = action.payload?.allUsers;
+      })
+      .addCase(SYloginJWT.rejected, state => {
+        state.isLoading = false;
+        state.isLogin = false;
       });
-    //System Login with JWT
   },
 });
 
 export const SYlogin = createAsyncThunk('user/login/system', async data => {
   const res = await AuthApi.login(data);
   if (res) {
-    await storeData('token', JSON.stringify(res.token));
+    await storeData('token', res.token);
     const userData = await AuthApi.getUserById(res.userId);
     const allUsers = await AuthApi.getAllUsers();
     if (!userData) {
       const MissData = {
         isLogin: false,
         email: data.email,
-        userId: res.userId,
+        userId: res.user_id,
       };
       navigationRef.navigate('UpdateInfo', {data});
       return MissData;
@@ -99,6 +118,7 @@ export const SYlogin = createAsyncThunk('user/login/system', async data => {
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
+        userId: userData.data.user_id,
         ...userData.data,
       };
       return fullData;
@@ -115,7 +135,6 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
     avatar: AvatarURL,
     allUsers: allUsers.data,
   };
-  console.log('data', data);
   const res = await AuthApi.updateInfo(userData);
   if (res) {
     return userData;
@@ -123,7 +142,29 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
 });
 
 export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
-  if (getData('token')) {
-    console.log('token', getData('token'));
+  const res = await AuthApi.loginJWT(data);
+  console.log('res', res);
+  if (res) {
+    await storeData('token', res.token);
+    const userData = await AuthApi.getUserById(res.userId);
+    const allUsers = await AuthApi.getAllUsers();
+    if (!userData) {
+      const MissData = {
+        isLogin: false,
+        email: data.email,
+        userId: res.user_id,
+      };
+      navigationRef.navigate('UpdateInfo', {data});
+      return MissData;
+    } else {
+      const fullData = {
+        isLogin: true,
+        allUsers: allUsers.data,
+        userId: userData.data.user_id,
+        ...userData.data,
+      };
+      return fullData;
+    }
   }
+  return null;
 });

@@ -1,13 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
+import {useEffect} from 'react';
 import {View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Insomnia from '../../../assets/image/insomnia.svg';
 import STDropDown from '../../components/STComponents/STDropDown';
 import STText from '../../components/STComponents/STText';
+import {getForum} from '../../reducers/forum.reducers';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 
 const fakeData = [
   {
@@ -332,44 +336,54 @@ const fakeData = [
 ];
 
 export default function ForumList() {
-  const height = useSelector(state => state.screenDimensions.height);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getForum());
+  }, []);
+  const forum = useSelector(state => state.forum);
+
   return (
-    <SafeAreaView
-      style={{backgroundColor: 'white', minHeight: height}}
-      className="p-4">
-      <ScrollView>
-        <View className="mt-4">
-          <STText className="text-3xl font-bold text-black text-center">
-            Diễn đàn xã hội
-          </STText>
+    <SafeAreaView className="p-4 bg-white h-full">
+      {!forum.isLoading ? (
+        <ScrollView className="bg-white h-full">
+          <View className="mt-4">
+            <STText className="text-3xl font-bold text-black text-center">
+              Diễn đàn xã hội
+            </STText>
+          </View>
+          <View className="mt-5">
+            {forum.ListForum.map(item => (
+              <Card key={item.id} data={item} />
+            ))}
+          </View>
+          <STDropDown title="Chi tiết" className="mt-3" heightDrop={140}>
+            <STText className="mt-2 text-sm text-gray-500 text-center">
+              Bạn có thể chia sẻ những gì mình nghĩ, những điều khó nói, những
+              vấn đề mà bạn đang gặp phải trong cuộc sống hằng ngày.
+            </STText>
+            <STText className="mt-2 text-sm text-gray-500 text-center">
+              Tất nhiên bạn có thể hoàn toàn ẩn danh, hoặc chia sẻ thông tin.
+              Tùy vào quyết định của bạn.
+            </STText>
+          </STDropDown>
+        </ScrollView>
+      ) : (
+        <View className="h-full flex justify-center">
+          <LoadingScreen />
         </View>
-        <View className="mt-5">
-          {fakeData.map(item => (
-            <Card key={item.id} data={item} />
-          ))}
-        </View>
-        <STDropDown title="Chi tiết" className="mt-3" heightDrop={140}>
-          <STText className="mt-2 text-sm text-gray-500 text-center">
-            Bạn có thể chia sẻ những gì mình nghĩ, những điều khó nói, những vấn
-            đề mà bạn đang gặp phải trong cuộc sống hằng ngày.
-          </STText>
-          <STText className="mt-2 text-sm text-gray-500 text-center">
-            Tất nhiên bạn có thể hoàn toàn ẩn danh, hoặc chia sẻ thông tin. Tùy
-            vào quyết định của bạn.
-          </STText>
-        </STDropDown>
-      </ScrollView>
+      )}
     </SafeAreaView>
   );
 }
 
 const Card = ({data}) => {
   const navigation = useNavigation();
+  const colorList = ['#F9A826', '#F9A826', '#F9A826'];
   return (
     <TouchableOpacity
       className="w-full h-28 rounded-lg my-2"
-      style={{backgroundColor: data.color}}
-      onPress={() => navigation.navigate('ForumScreen', {data: data})}>
+      style={{backgroundColor: colorList[data.id % 3]}}
+      onPress={() => navigation.navigate('ForumScreen', {id: data.id})}>
       <View className="p-4 h-full w-5/6 flex-row items-center">
         <Insomnia width={80} height={80} />
         <STText className="text-white text-lg">{data.name}</STText>
