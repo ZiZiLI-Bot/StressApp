@@ -96,6 +96,26 @@ export const UserReducer = createSlice({
       .addCase(SYloginJWT.rejected, state => {
         state.isLoading = false;
         state.isLogin = false;
+      })
+      //System Logout
+      .addCase(SYlogout.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(SYlogout.fulfilled, state => {
+        state.isLoading = false;
+        state.isLogin = false;
+        state.userId = null;
+        state.name = null;
+        state.email = null;
+        state.phone = null;
+        state.avatar = null;
+        state.newUser = false;
+        state.real_name = null;
+        state.allUsers = [];
+      })
+      .addCase(SYlogout.rejected, state => {
+        state.isLoading = false;
+        state.isLogin = false;
       });
   },
 });
@@ -110,7 +130,6 @@ export const SYlogin = createAsyncThunk('user/login/system', async data => {
       const MissData = {
         isLogin: false,
         email: data.email,
-        userId: res.user_id,
       };
       navigationRef.navigate('UpdateInfo', {data});
       return MissData;
@@ -118,7 +137,6 @@ export const SYlogin = createAsyncThunk('user/login/system', async data => {
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
-        userId: userData.data.user_id,
         ...userData.data,
       };
       return fullData;
@@ -131,7 +149,6 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
   const allUsers = await AuthApi.getAllUsers();
   const userData = {
     ...data,
-    user_id: data.userId,
     avatar: AvatarURL,
     allUsers: allUsers.data,
   };
@@ -143,7 +160,6 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
 
 export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
   const res = await AuthApi.loginJWT(data);
-  console.log('res', res);
   if (res) {
     await storeData('token', res.token);
     const userData = await AuthApi.getUserById(res.userId);
@@ -152,7 +168,6 @@ export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
       const MissData = {
         isLogin: false,
         email: data.email,
-        userId: res.user_id,
       };
       navigationRef.navigate('UpdateInfo', {data});
       return MissData;
@@ -160,11 +175,15 @@ export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
-        userId: userData.data.user_id,
         ...userData.data,
       };
       return fullData;
     }
   }
   return null;
+});
+
+export const SYlogout = createAsyncThunk('user/logout', async () => {
+  await storeData('token', '');
+  return initialState;
 });

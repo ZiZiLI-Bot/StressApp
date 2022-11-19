@@ -6,9 +6,11 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import {Avatar, Button, Divider} from 'react-native-paper';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {SYlogout} from '../../reducers';
 
 export default function DrawerContainer(props) {
+  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   return (
     <View className="flex-1">
@@ -25,7 +27,7 @@ export default function DrawerContainer(props) {
       </DrawerContentScrollView>
       <Divider bold />
       <View className="h-16 flex justify-center">
-        <Button icon="logout" mode="text">
+        <Button icon="logout" mode="text" onPress={() => dispatch(SYlogout())}>
           Đăng xuất
         </Button>
       </View>

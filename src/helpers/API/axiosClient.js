@@ -3,7 +3,7 @@ import qs from 'qs';
 import {getData} from '../Store';
 
 const axiosClient = axios.create({
-  baseURL: 'http://tuanhung.site:19000/api/v1/',
+  baseURL: 'https://tuanhung.site/api/v1/',
   headers: {
     'content-type': 'application/json',
   },

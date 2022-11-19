@@ -1,27 +1,17 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import AuthApi from '../helpers/API/Auth.api';
 import ForumAPI from '../helpers/API/ForumAPI';
 
 const initialState = {
-  ListForum: [],
   Post: [],
-  isLoading: false,
+  Comment: [],
+  isLoadingPost: false,
+  idLoadingComment: false,
 };
 
 export const ForumReducer = createSlice({
   name: 'forum',
   initialState,
   extraReducers: builder => {
-    builder.addCase(getForum.pending, (state, action) => {
-      state.isLoading = true;
-    });
-    builder.addCase(getForum.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.ListForum = action.payload;
-    });
-    builder.addCase(getForum.rejected, (state, action) => {
-      state.isLoading = false;
-    });
     //getPostForum
     builder.addCase(getPostForum.pending, (state, action) => {
       state.isLoading = true;
@@ -33,26 +23,29 @@ export const ForumReducer = createSlice({
     builder.addCase(getPostForum.rejected, (state, action) => {
       state.isLoading = false;
     });
+    //getComment
+    builder.addCase(getComment.pending, (state, action) => {
+      state.idLoadingComment = true;
+    });
+    builder.addCase(getComment.fulfilled, (state, action) => {
+      state.idLoadingComment = false;
+      state.Comment = action.payload;
+    });
+    builder.addCase(getComment.rejected, (state, action) => {
+      state.idLoadingComment = false;
+    });
   },
-});
-
-export const getForum = createAsyncThunk('forum/get', async () => {
-  const res = await ForumAPI.getForums();
-  return res.data;
 });
 
 export const getPostForum = createAsyncThunk('forum/getPost', async id => {
   const res = await ForumAPI.getPostById(id);
-  console.log(res.data);
-  // const data = Promise.all(
-  //   res.data.map(async item => {
-  //     const dataUserPost = await AuthApi.getProfile(item.profile_id);
-  //     console.log(dataUserPost);
-  //     return {
-  //       ...item,
-  //       dataUserPost: dataUserPost.data,
-  //     };
-  //   }),
-  // );
-  return res;
+  return res.data;
 });
+
+export const getComment = createAsyncThunk(
+  'forum/getComment',
+  async (poster_id, parent_id) => {
+    const res = await ForumAPI.getCommentById(poster_id, parent_id);
+    return res.data;
+  },
+);

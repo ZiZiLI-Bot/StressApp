@@ -1,350 +1,33 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useNavigation} from '@react-navigation/native';
-import dayjs from 'dayjs';
-import React from 'react';
-import {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
 import Insomnia from '../../../assets/image/insomnia.svg';
+import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
 import STDropDown from '../../components/STComponents/STDropDown';
 import STText from '../../components/STComponents/STText';
-import {getForum} from '../../reducers/forum.reducers';
-import LoadingScreen from '../../components/LoadingScreen/LoadingScreen';
-
-const fakeData = [
-  {
-    id: 0,
-    name: 'Diễn đàn về vấn đề mất ngủ, trầm cảm, lo âu, OCD',
-    color: 'violet',
-    type: 'insomnia',
-    posts: [
-      {
-        id: 1,
-        author: 'Maria',
-        avatar: 'https://picsum.photos/200',
-        content: 'Mình đang mất ngủ, ai có cách giúp mình không ?',
-        date: dayjs('2022-10-12 19:18'),
-        likes: 16,
-        re_posts: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-      },
-      {
-        id: 2,
-        author: 'Super Admin',
-        avatar: 'https://picsum.photos/300',
-        date: dayjs('2022-10-13 7:18'),
-        content:
-          'Dạo gần đây mình rất hay bị lo lắng, ai có cách giúp mình không ?',
-        likes: 55,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/100',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/300',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-      {
-        id: 3,
-        author: 'Peter',
-        date: Date.now(),
-        avatar: 'https://picsum.photos/400',
-        content: 'Bài đăng thử nghiệm 1',
-        likes: 12,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/100',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/300',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/500',
-            content: 'Bình luận 4',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-    ],
-  },
-  {
-    id: 1,
-    name: 'Diễn đàn về những khó khăn trong tâm lý học đường',
-    color: 'blue',
-    type: 'insomnia',
-    posts: [
-      {
-        id: 1,
-        author: 'Peter',
-        avatar: 'https://picsum.photos/650',
-        date: dayjs('2022-10-12 19:18'),
-        content: '>>>>>',
-        likes: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-      {
-        id: 2,
-        author: 'Mark',
-        avatar: 'https://picsum.photos/300',
-        date: Date.now(),
-        content: 'I am Mark',
-        likes: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-      {
-        id: 3,
-        author: 'Super Admin',
-        date: Date.now(),
-        content: 'Hello world',
-        likes: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Tư duy tích cực, thay đổi cuộc sống',
-    color: 'green',
-    type: 'insomnia',
-    posts: [
-      {
-        id: 1,
-        author: 'SuperAdmin',
-        avatar: 'https://picsum.photos/650',
-        date: Date.now(),
-        content: 'Hello world',
-        likes: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-      {
-        id: 2,
-        author: 'SuperAdmin',
-        avatar: 'https://picsum.photos/300',
-        date: Date.now(),
-        content: 'Hello world',
-        likes: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-      {
-        id: 3,
-        author: 'SuperAdmin',
-        avatar: 'https://picsum.photos/250',
-        date: Date.now(),
-        content: 'Hello world',
-        likes: 0,
-        comments: [
-          {
-            id: 1,
-            author: 'Mark',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 1',
-            date: dayjs('2022-10-12 19:20'),
-          },
-          {
-            id: 2,
-            author: 'Light',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 2',
-            date: dayjs('2022-10-12 19:26'),
-          },
-          {
-            id: 3,
-            author: 'Peter',
-            avatar: 'https://picsum.photos/200',
-            content: 'Bình luận 3',
-            date: dayjs('2022-10-12 20:18'),
-          },
-        ],
-        re_posts: 0,
-      },
-    ],
-  },
-];
+import ForumAPI from '../../helpers/API/ForumAPI';
 
 export default function ForumList() {
-  const dispatch = useDispatch();
+  const [listForum, setListForum] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    dispatch(getForum());
+    const getForumList = async () => {
+      setLoading(true);
+      const res = await ForumAPI.getForums();
+      if (res) {
+        setListForum(res.data);
+      }
+      setLoading(false);
+    };
+    getForumList();
   }, []);
-  const forum = useSelector(state => state.forum);
 
   return (
     <SafeAreaView className="p-4 bg-white h-full">
-      {!forum.isLoading ? (
+      {!loading ? (
         <ScrollView className="bg-white h-full">
           <View className="mt-4">
             <STText className="text-3xl font-bold text-black text-center">
@@ -352,7 +35,7 @@ export default function ForumList() {
             </STText>
           </View>
           <View className="mt-5">
-            {forum.ListForum.map(item => (
+            {listForum.map(item => (
               <Card key={item.id} data={item} />
             ))}
           </View>

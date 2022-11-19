@@ -26,9 +26,8 @@ const AuthApi = {
     return await axiosClient.post(url, data);
   },
   loginJWT: async data => {
-    const res = await axiosClient.post(
-      `http://tuanhung.site:19000/api/v1/user/login/jwt?refToken=${data}`,
-    );
+    const url = `user/login/jwt?refToken=${data}`;
+    const res = await axiosClient.post(url);
     return res;
   },
 };

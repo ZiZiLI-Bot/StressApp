@@ -12,11 +12,12 @@ import {TouchableOpacity, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {Avatar, Divider} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import BackIcon from '../../components/BackIcon/BackIcon';
 import STText from '../../components/STComponents/STText';
-import {getPostForum} from '../../reducers/forum.reducers';
+import {getComment, getPostForum} from '../../reducers/forum.reducers';
 
 export default function ForumScreen({route, navigation}) {
   const id = route.params.id;
@@ -30,17 +31,17 @@ export default function ForumScreen({route, navigation}) {
 
   const sheetRef = useRef(null);
   const [openSheet, setOpenSheet] = useState(false);
-  const [commentData, setCommentData] = useState(null);
-  const snapPoints = useMemo(() => ['60%', '100%'], []);
+  const [CommentId, setCommentId] = useState(null);
+  const snapPoints = useMemo(() => ['100%'], []);
 
-  const handlePresentModalPress = useCallback(dataComment => {
-    setCommentData(dataComment);
+  const handlePresentModalPress = useCallback(id => {
+    setCommentId(id);
     setOpenSheet(true);
     sheetRef.current?.present();
   }, []);
 
   const handleCloseSheet = useCallback(() => {
-    setCommentData(null);
+    setCommentId(null);
     setOpenSheet(false);
   }, []);
 
@@ -48,68 +49,74 @@ export default function ForumScreen({route, navigation}) {
     <SafeAreaView className="h-full relative">
       <View className="flex-row items-center bg-white rounded-lg py-2">
         <BackIcon onPress={() => navigation.goBack()} className="ml-1" />
-        <View className="flex-1">
+        <View className="flex-row flex-1 items-center">
           <Avatar.Image
             size={50}
             source={{uri: user.avatar}}
-            className="ml-4 overflow-hidden"
+            className="ml-2 overflow-hidden"
           />
-          <STText className="ml-6 text-black text-base">
+          <STText className="ml-3 text-black text-base">
             Bạn có điều gì muốn chia sẻ ?
           </STText>
         </View>
       </View>
       <ScrollView>
-        {post.map(item => (
-          <View key={item.id} className="bg-white rounded-lg my-2">
-            <View className="flex-row py-2">
-              <Avatar.Image
-                size={50}
-                className="ml-2"
-                source={{uri: item.dataUserPost.avatar}}
-              />
-              <View>
-                <STText className="ml-3 text-black text-base">
-                  {item.dataUserPost.name}
-                </STText>
-                <STText className="ml-3 text-black text-base">
-                  {dayjs(item.UpdatedAt).format('HH:mm')} -{' '}
-                  {dayjs(item.UpdatedAt).format('DD/MM/YYYY')}
-                </STText>
+        {post.isLoadingPost ? (
+          <PlaceholderPost />
+        ) : (
+          <View>
+            {post.map(item => (
+              <View key={item.id} className="bg-white rounded-lg my-2">
+                <View className="flex-row py-2">
+                  <Avatar.Image
+                    size={50}
+                    className="ml-2"
+                    source={{uri: item.profile.avatar}}
+                  />
+                  <View>
+                    <STText className="ml-3 text-black text-base">
+                      {item.profile.name}
+                    </STText>
+                    <STText className="ml-3 text-black text-base">
+                      {dayjs(item.UpdatedAt).format('HH:mm')} -{' '}
+                      {dayjs(item.UpdatedAt).format('DD/MM/YYYY')}
+                    </STText>
+                  </View>
+                </View>
+                <View className="my-2">
+                  <STText className="ml-3 text-black text-base">
+                    {item.content}
+                  </STText>
+                </View>
+                <Divider bold={true} />
+                <View className="flex-row justify-center my-1">
+                  <View className="flex-row justify-between w-11/12">
+                    <TouchableOpacity className="flex-row items-center">
+                      <Icon name="heart-outline" size={26} color="black" />
+                      <STText className="ml-2 text-black text-sm">
+                        {item.like} Thích
+                      </STText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="flex-row items-center"
+                      onPress={() => handlePresentModalPress(item.id)}>
+                      <Icon name="comment-outline" size={26} color="black" />
+                      <STText className="ml-2 text-black text-sm">
+                        Bình luận
+                      </STText>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="flex-row items-center">
+                      <Icon name="share-outline" size={26} color="black" />
+                      <STText className="ml-2 text-black text-sm">
+                        {item.share} Chia sẻ
+                      </STText>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-            </View>
-            <View className="my-2">
-              <STText className="ml-3 text-black text-base">
-                {item.content}
-              </STText>
-            </View>
-            <Divider bold={true} />
-            <View className="flex-row justify-center my-1">
-              <View className="flex-row justify-between w-11/12">
-                <TouchableOpacity className="flex-row items-center">
-                  <Icon name="heart-outline" size={26} color="black" />
-                  <STText className="ml-2 text-black text-sm">
-                    {item.like} Thích
-                  </STText>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  className="flex-row items-center"
-                  onPress={() => handlePresentModalPress(item.comment)}>
-                  <Icon name="comment-outline" size={26} color="black" />
-                  <STText className="ml-2 text-black text-sm">
-                    {/* {item.comment.length} Bình luận */}
-                  </STText>
-                </TouchableOpacity>
-                <TouchableOpacity className="flex-row items-center">
-                  <Icon name="share-outline" size={26} color="black" />
-                  <STText className="ml-2 text-black text-sm">
-                    {item.share} Chia sẻ
-                  </STText>
-                </TouchableOpacity>
-              </View>
-            </View>
+            ))}
           </View>
-        ))}
+        )}
       </ScrollView>
       <BottomSheetModalProvider>
         <BottomSheetModal
@@ -118,7 +125,7 @@ export default function ForumScreen({route, navigation}) {
           enablePanDownToClose={true}
           onDismiss={handleCloseSheet}>
           <BottomSheetView>
-            <CommentView item={commentData} />
+            <CommentView dispatch={dispatch} poster_id={CommentId} />
           </BottomSheetView>
         </BottomSheetModal>
       </BottomSheetModalProvider>
@@ -126,13 +133,18 @@ export default function ForumScreen({route, navigation}) {
   );
 }
 
-const CommentView = ({item}) => {
+const CommentView = ({dispatch, poster_id}) => {
+  useEffect(() => {
+    dispatch(getComment(poster_id, 0));
+  }, [poster_id]);
+  const comment = useSelector(state => state.forum.Comment);
+  console.log(comment);
   return (
     <View className="px-2">
       <STText font="bold" className="text-center text-black text-2xl">
         Bình luận
       </STText>
-      {item.map(comment => (
+      {/* {item.map(comment => (
         <View key={comment.id} className="flex-row my-3 items-center">
           <Avatar.Image size={45} source={{uri: comment.avatar}} />
           <View className="ml-3">
@@ -145,7 +157,64 @@ const CommentView = ({item}) => {
             <STText className="text-base text-black">{comment.content}</STText>
           </View>
         </View>
+      ))} */}
+    </View>
+  );
+};
+
+const PlaceholderPost = () => {
+  const list = [1, 2, 3];
+  return (
+    <View>
+      {list.map(item => (
+        <View key={item} className="w-full h-36 bg-white p-2 my-2">
+          <SkeletonPlaceholder borderRadius={4}>
+            <SkeletonPlaceholder.Item flexDirection="row" alignItems="center">
+              <SkeletonPlaceholder.Item
+                width={60}
+                height={60}
+                borderRadius={50}
+              />
+              <SkeletonPlaceholder.Item marginLeft={20}>
+                <SkeletonPlaceholder.Item width={120} height={20} />
+                <SkeletonPlaceholder.Item
+                  marginTop={6}
+                  width={80}
+                  height={20}
+                />
+              </SkeletonPlaceholder.Item>
+            </SkeletonPlaceholder.Item>
+            <SkeletonPlaceholder.Item marginLeft={20} marginTop={10}>
+              <SkeletonPlaceholder.Item width={240} height={20} />
+              <SkeletonPlaceholder.Item
+                width={240}
+                height={20}
+                marginTop={10}
+              />
+            </SkeletonPlaceholder.Item>
+          </SkeletonPlaceholder>
+        </View>
       ))}
+    </View>
+  );
+};
+
+const PlaceholderComment = () => {
+  return (
+    <View className="w-full h-36 bg-white p-2 my-2">
+      <SkeletonPlaceholder borderRadius={4}>
+        <SkeletonPlaceholder.Item flexDirection="row" alignItems="center">
+          <SkeletonPlaceholder.Item width={60} height={60} borderRadius={50} />
+          <SkeletonPlaceholder.Item marginLeft={20}>
+            <SkeletonPlaceholder.Item width={120} height={20} />
+            <SkeletonPlaceholder.Item marginTop={6} width={80} height={20} />
+          </SkeletonPlaceholder.Item>
+        </SkeletonPlaceholder.Item>
+        <SkeletonPlaceholder.Item marginLeft={20} marginTop={10}>
+          <SkeletonPlaceholder.Item width={240} height={20} />
+          <SkeletonPlaceholder.Item width={240} height={20} marginTop={10} />
+        </SkeletonPlaceholder.Item>
+      </SkeletonPlaceholder>
     </View>
   );
 };
