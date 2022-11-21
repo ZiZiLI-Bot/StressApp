@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, ScrollView, TouchableOpacity} from 'react-native';
+import {View, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import {Avatar, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import STText from '../../components/STComponents/STText';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const dataDoctor = [
   {
@@ -33,6 +34,18 @@ export default function ExpertsScreen({navigation}) {
   return (
     <SafeAreaView className="pt-4 px-3 w-full h-full bg-white">
       <ScrollView className="bg-white">
+        <View className="w-full h-16 flex-row items-center justify-between">
+          <STText font="bold" className="text-2xl text-black">
+            Các cơ sở chuyên môn
+          </STText>
+          <View>
+            <TouchableOpacity
+              className="bg-gray-200 w-12 h-12 flex justify-center items-center rounded-xl"
+              onPress={() => navigation.openDrawer()}>
+              <Icon name="menu-open" size={30} color="#5669ff" />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View>
           <STText font="bold" className="text-2xl text-black">
             Bác sĩ chuyên khoa
@@ -76,7 +89,10 @@ const CardDoctor = ({item, navigation, isDoctor}) => {
         navigation.navigate('ExpertsContent', {data: item, isDoctor})
       }>
       <View className="flex-row items-center bg-slate-200 p-3 rounded-lg">
-        <Avatar.Image source={{uri: item?.avatar}} />
+        <Avatar.Image
+          source={{uri: item?.avatar}}
+          className="overflow-hidden"
+        />
         <View className="ml-4">
           <STText font="bold" className="text-black text-lg w-10/12">
             {item?.name}

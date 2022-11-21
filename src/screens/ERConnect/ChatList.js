@@ -47,7 +47,11 @@ export default function ERConnect({navigation}) {
       <View className="flex-row items-center">
         <BackIcon onPress={() => navigation.goBack()} className="mr-3" />
         <View className="overflow-hidden rounded-full">
-          <Avatar.Image source={{uri: user.avatar}} size={47} />
+          <Avatar.Image
+            source={{uri: user.avatar}}
+            size={47}
+            className="overflow-hidden"
+          />
         </View>
         <STText font="bold" className="text-xl text-black ml-3">
           ER Connect
@@ -76,7 +80,11 @@ export default function ERConnect({navigation}) {
               }
               className="flex-row my-2 items-center bg-slate-100 p-2 rounded-lg"
               key={item.roomId}>
-              <Avatar.Image source={{uri: displayUser.avatar}} size={55} />
+              <Avatar.Image
+                source={{uri: displayUser.avatar}}
+                size={55}
+                className="overflow-hidden"
+              />
               <STText className="text-base text-black ml-3">
                 {displayUser.name}
               </STText>

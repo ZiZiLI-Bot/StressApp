@@ -64,7 +64,7 @@ export default function SearchUser({navigation}) {
               <Avatar.Image
                 source={{uri: item.avatar}}
                 size={47}
-                className="ml-3"
+                className="ml-3 overflow-hidden"
               />
               <STText className="ml-5 text-base text-gray-600">
                 {item.name}

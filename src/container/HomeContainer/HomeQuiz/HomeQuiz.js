@@ -87,6 +87,7 @@ const SelectedEmotionView = ({setSelectedEmotion}) => {
     <View className="my-4 flex-row">
       {dataEmotion.map((item, index) => (
         <TouchableOpacity
+          className="mt-2"
           key={item.id}
           onPress={() => setSelectedEmotion(item)}>
           <View className="flex items-center justify-center mx-4">

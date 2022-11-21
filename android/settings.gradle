@@ -14,4 +14,6 @@ if (settings.hasProperty("newArchEnabled") && settings.newArchEnabled == "true")
     project(':@react-native-async-storage').projectDir = new File(rootProject.projectDir, '../node_modules/@react-native-async-storage/async-storage/android')
     include ':lottie-react-native'
     project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')
+    include ':react-native-notifications'
+    project(':react-native-notifications').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-notifications/lib/android/app')
 }

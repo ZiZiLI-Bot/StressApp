@@ -4,7 +4,9 @@ import DiaryContent from '../screens/DiaryScreen/DiaryContent';
 import ChatRoom from '../screens/ERConnect/ChatRoom';
 import SearchUser from '../screens/ERConnect/SearchUser';
 import ExpertsContent from '../screens/ExpertsScreen/ExpertsContent';
+import CreatePost from '../screens/ForumScreen/CreatePost';
 import ForumScreen from '../screens/ForumScreen/ForumScreen';
+import ViewDetailPost from '../screens/ForumScreen/ViewDetailPost';
 import PostsScreen from '../screens/PostsScreen';
 import QuizScreen from '../screens/QuizScreen';
 import DrawerNavigation from './DrawerNavigation';
@@ -28,6 +30,8 @@ export default function AppNavigation() {
         <Stack.Screen name="SearchUser" component={SearchUser} />
         <Stack.Screen name="DiaryContent" component={DiaryContent} />
         <Stack.Screen name="ExpertsContent" component={ExpertsContent} />
+        <Stack.Screen name="ViewDetailPost" component={ViewDetailPost} />
+        <Stack.Screen name="CreatePost" component={CreatePost} />
       </Stack.Group>
     </Stack.Navigator>
   );

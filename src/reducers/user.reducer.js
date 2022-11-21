@@ -1,7 +1,8 @@
+import messaging from '@react-native-firebase/messaging';
 import storage from '@react-native-firebase/storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import AuthApi from '../helpers/API/Auth.api';
-import {storeData, getData} from '../helpers/Store';
+import {storeData} from '../helpers/Store';
 import {navigationRef} from '../navigation';
 
 const uploadImageToFirebase = async image => {
@@ -18,6 +19,8 @@ const uploadImageToFirebase = async image => {
 };
 
 const initialState = {
+  profileId: null,
+  tokenDevice: null,
   userId: null,
   name: null,
   real_name: null,
@@ -44,6 +47,8 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = action.payload.isLogin;
         state.userId = action.payload?.userId;
+        state.tokenDevice = action.payload?.state;
+        state.profileId = action.payload?.id;
         state.name = action.payload?.name;
         state.email = action.payload?.email;
         state.phone = action.payload?.phone;
@@ -65,6 +70,8 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = true;
         state.userId = action.payload?.userId;
+        state.tokenDevice = action.payload?.state;
+        state.profileId = action.payload?.id;
         state.name = action.payload?.name;
         state.email = action.payload?.email;
         state.phone = action.payload?.phone;
@@ -85,6 +92,8 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = true;
         state.userId = action.payload?.userId;
+        state.profileId = action.payload?.id;
+        state.tokenDevice = action.payload?.state;
         state.name = action.payload?.name;
         state.email = action.payload?.email;
         state.phone = action.payload?.phone;
@@ -105,6 +114,8 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = false;
         state.userId = null;
+        state.profileId = null;
+        state.tokenDevice = null;
         state.name = null;
         state.email = null;
         state.phone = null;
@@ -122,6 +133,8 @@ export const UserReducer = createSlice({
 
 export const SYlogin = createAsyncThunk('user/login/system', async data => {
   const res = await AuthApi.login(data);
+  await messaging().registerDeviceForRemoteMessages();
+  const tokenDevice = await messaging().getToken();
   if (res) {
     await storeData('token', res.token);
     const userData = await AuthApi.getUserById(res.userId);
@@ -129,14 +142,22 @@ export const SYlogin = createAsyncThunk('user/login/system', async data => {
     if (!userData) {
       const MissData = {
         isLogin: false,
-        email: data.email,
       };
-      navigationRef.navigate('UpdateInfo', {data});
+      const overWriteData = {...data, userId: res.userId, tokenDevice};
+      navigationRef.navigate('UpdateInfo', {data: overWriteData});
       return MissData;
     } else {
+      if (tokenDevice !== userData.state) {
+        const updateDeviceToken = {
+          id: userData.id,
+          state: tokenDevice,
+        };
+        await AuthApi.updateProfile(updateDeviceToken);
+      }
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
+        state: tokenDevice,
         ...userData.data,
       };
       return fullData;
@@ -152,6 +173,7 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
     avatar: AvatarURL,
     allUsers: allUsers.data,
   };
+  console.log('userData', userData);
   const res = await AuthApi.updateInfo(userData);
   if (res) {
     return userData;
@@ -160,6 +182,8 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
 
 export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
   const res = await AuthApi.loginJWT(data);
+  await messaging().registerDeviceForRemoteMessages();
+  const tokenDevice = await messaging().getToken();
   if (res) {
     await storeData('token', res.token);
     const userData = await AuthApi.getUserById(res.userId);
@@ -167,14 +191,22 @@ export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
     if (!userData) {
       const MissData = {
         isLogin: false,
-        email: data.email,
       };
-      navigationRef.navigate('UpdateInfo', {data});
+      const overWriteData = {...data, userId: res.userId, tokenDevice};
+      navigationRef.navigate('UpdateInfo', {data: overWriteData});
       return MissData;
     } else {
+      if (tokenDevice !== userData.state) {
+        const updateDeviceToken = {
+          id: userData.id,
+          state: tokenDevice,
+        };
+        await AuthApi.updateProfile(updateDeviceToken);
+      }
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
+        state: tokenDevice,
         ...userData.data,
       };
       return fullData;

@@ -47,7 +47,11 @@ export default function ChatRoom({route, navigation}) {
     <>
       <View className="flex-row items-center p-2 bg-white">
         <BackIcon onPress={() => navigation.goBack()} className="mr-2" />
-        <Avatar.Image source={{uri: userDisplay.avatar}} size={47} />
+        <Avatar.Image
+          className="overflow-hidden"
+          source={{uri: userDisplay.avatar}}
+          size={47}
+        />
         <STText font="bold" className="text-xl text-black ml-3">
           {userDisplay.name}
         </STText>
@@ -63,6 +67,16 @@ export default function ChatRoom({route, navigation}) {
           _id: user.userId,
           name: user.name,
           avatar: user.avatar,
+        }}
+        renderAvatar={props => {
+          const {user} = props.currentMessage;
+          return (
+            <Avatar.Image
+              size={36}
+              source={{uri: user.avatar}}
+              className="overflow-hidden"
+            />
+          );
         }}
       />
     </>

@@ -36,6 +36,7 @@ export default function UpdateInfoScreen({route}) {
     checkLogin();
   }, []);
   const preData = route.params.data;
+  console.log('preData', preData);
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [birthday, setBirthday] = useState(new Date());
@@ -55,12 +56,13 @@ export default function UpdateInfoScreen({route}) {
   const handlerSubmit = async () => {
     const dataInput = {
       ...formatData,
-      userId: user.userId,
+      userId: preData.userId,
       gender: gender.value,
-      email: user.email,
+      email: preData.email,
       birthday: dayjs(birthday).format(),
       avatar: AvatarImage,
       name: name,
+      state: preData.tokenDevice,
     };
     dispatch(SYupdate(dataInput));
   };
@@ -126,6 +128,7 @@ export default function UpdateInfoScreen({route}) {
             <TextInput
               placeholder="Số điện thoại cá nhân."
               mode="outlined"
+              keyboardType="phone-pad"
               // defaultValue={user.phone}
               disabled={user.isLoading}
               onChangeText={text => (formatData.phone = text)}

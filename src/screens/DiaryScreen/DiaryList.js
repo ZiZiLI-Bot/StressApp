@@ -16,14 +16,12 @@ export default function DiaryScreen({navigation}) {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = async () => {
-    setRefreshing(true);
-    dispatch(getDiaryById(user.userId));
-    setRefreshing(false);
+    setRefreshing(!refreshing);
   };
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getDiaryById(user.userId));
-  }, []);
+  }, [refreshing]);
   return (
     <SafeAreaView className="pt-3 px-4 bg-white h-full relative">
       <View className="w-full h-16 flex-row items-center justify-between">
@@ -41,7 +39,7 @@ export default function DiaryScreen({navigation}) {
       <ScrollView
         className="bg-white"
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl refreshing={diary.isLoading} onRefresh={onRefresh} />
         }>
         <View>
           {diary.isLoading ? (

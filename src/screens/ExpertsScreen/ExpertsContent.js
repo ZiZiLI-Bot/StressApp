@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, Alert} from 'react-native';
 import React from 'react';
 import STText from '../../components/STComponents/STText';
 import BackIcon from '../../components/BackIcon';
@@ -7,6 +7,12 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 export default function ExpertsContent({route, navigation}) {
   const {data, isDoctor} = route.params;
+  const bookDoctor = () => {
+    console.log('book doctor');
+  };
+  const bookOffice = () => {
+    Alert.alert('Thông báo', 'Tính năng đang được phát triển', ['có', 'không']);
+  };
   return (
     <SafeAreaView className="bg-white pt-3 h-full">
       <View className="w-full h-32 relative px-4">
@@ -18,7 +24,7 @@ export default function ExpertsContent({route, navigation}) {
         </View>
         <Avatar.Image
           source={{uri: data.avatar}}
-          className="absolute z-10"
+          className="absolute z-10 overflow-hidden"
           style={{left: '50%', bottom: -33, transform: [{translateX: -45}]}}
           size={120}
         />
@@ -37,7 +43,9 @@ export default function ExpertsContent({route, navigation}) {
       </ScrollView>
       <View className="w-full h-16 bg-white flex-row items-center justify-around">
         <Button mode="contained">Tư vấn Online</Button>
-        <Button mode="contained">Đặt lịch khám</Button>
+        <Button mode="contained" onPress={bookOffice}>
+          Đặt lịch khám
+        </Button>
       </View>
     </SafeAreaView>
   );

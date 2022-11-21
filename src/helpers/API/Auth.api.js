@@ -30,6 +30,10 @@ const AuthApi = {
     const res = await axiosClient.post(url);
     return res;
   },
+  updateProfile: async data => {
+    const url = '/profile/update';
+    return await axiosClient.put(url, data);
+  },
 };
 
 export default AuthApi;
