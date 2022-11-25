@@ -47,7 +47,7 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = action.payload.isLogin;
         state.userId = action.payload?.userId;
-        state.tokenDevice = action.payload?.state;
+        state.tokenDevice = action.payload?.tokenDevice;
         state.profileId = action.payload?.id;
         state.name = action.payload?.name;
         state.email = action.payload?.email;
@@ -70,7 +70,7 @@ export const UserReducer = createSlice({
         state.isLoading = false;
         state.isLogin = true;
         state.userId = action.payload?.userId;
-        state.tokenDevice = action.payload?.state;
+        state.tokenDevice = action.payload?.tokenDevice;
         state.profileId = action.payload?.id;
         state.name = action.payload?.name;
         state.email = action.payload?.email;
@@ -93,7 +93,7 @@ export const UserReducer = createSlice({
         state.isLogin = true;
         state.userId = action.payload?.userId;
         state.profileId = action.payload?.id;
-        state.tokenDevice = action.payload?.state;
+        state.tokenDevice = action.payload?.tokenDevice;
         state.name = action.payload?.name;
         state.email = action.payload?.email;
         state.phone = action.payload?.phone;
@@ -149,15 +149,16 @@ export const SYlogin = createAsyncThunk('user/login/system', async data => {
     } else {
       if (tokenDevice !== userData.state) {
         const updateDeviceToken = {
-          id: userData.id,
+          id: userData.data.id,
           state: tokenDevice,
         };
-        await AuthApi.updateProfile(updateDeviceToken);
+        const res = AuthApi.updateProfile(updateDeviceToken);
+        console.log('res', res, 'update', updateDeviceToken);
       }
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
-        state: tokenDevice,
+        tokenDevice: tokenDevice,
         ...userData.data,
       };
       return fullData;
@@ -170,6 +171,7 @@ export const SYupdate = createAsyncThunk('user/update/system', async data => {
   const allUsers = await AuthApi.getAllUsers();
   const userData = {
     ...data,
+    tokenDevice: data.state,
     avatar: AvatarURL,
     allUsers: allUsers.data,
   };
@@ -198,15 +200,16 @@ export const SYloginJWT = createAsyncThunk('user/login/jwt', async data => {
     } else {
       if (tokenDevice !== userData.state) {
         const updateDeviceToken = {
-          id: userData.id,
+          id: userData.data.id,
           state: tokenDevice,
         };
-        await AuthApi.updateProfile(updateDeviceToken);
+        const res = AuthApi.updateProfile(updateDeviceToken);
+        console.log('res', res, 'update', updateDeviceToken);
       }
       const fullData = {
         isLogin: true,
         allUsers: allUsers.data,
-        state: tokenDevice,
+        tokenDevice: tokenDevice,
         ...userData.data,
       };
       return fullData;

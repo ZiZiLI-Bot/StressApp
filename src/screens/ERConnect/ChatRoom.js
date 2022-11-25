@@ -9,6 +9,7 @@ import STText from '../../components/STComponents/STText';
 import 'dayjs/locale/vi';
 import firestore from '@react-native-firebase/firestore';
 import {addDocument} from '../../helpers/FireService';
+import axios from 'axios';
 
 export default function ChatRoom({route, navigation}) {
   const [messages, setMessages] = useState([]);
@@ -37,10 +38,27 @@ export default function ChatRoom({route, navigation}) {
   }, []);
 
   const onSend = useCallback((messages = []) => {
-    // setMessages(previousMessages =>
-    //   GiftedChat.append(previousMessages, messages),
-    // );
     addDocument('messages', {...messages[0], roomId: roomsData.roomId});
+    const res = axios({
+      method: 'post',
+      url: 'https://fcm.googleapis.com/fcm/send',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization:
+          'key=AAAAKiGUGB8:APA91bHGLmTsJopsMucmCvvG0tqLaGbxlaDJy5JBdOESP4NhNFt9iPHMjxvd4ctZcUYZoKqhwZNsRwfWUfGGJAgk_smwFi9V6mbnd7A3G1gy0zoGrCSncFdY3g_kZ428OVqWcjhTFH4v',
+      },
+      data: {
+        to: userDisplay.tokenDevice,
+        data: {},
+        notification: {
+          android: {imageUrl: user.avatar},
+          title: 'Tin nhắn mới từ ' + user.name,
+          body: messages[0].text,
+        },
+        direct_boot_ok: true,
+      },
+    });
+    console.log('res', res);
   }, []);
 
   return (

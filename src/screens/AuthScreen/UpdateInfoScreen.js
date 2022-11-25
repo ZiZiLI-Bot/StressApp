@@ -64,7 +64,8 @@ export default function UpdateInfoScreen({route}) {
       name: name,
       state: preData.tokenDevice,
     };
-    dispatch(SYupdate(dataInput));
+    console.log('dataInput', dataInput);
+    dispatch(SYupdate(dataInput)); 
   };
   return (
     <SafeAreaView style={{backgroundColor: 'white'}} className="px-4">

@@ -22,6 +22,8 @@ export default function SearchUser({navigation}) {
     }
   };
 
+  console.log(searchUser);
+
   const createRoom = async userTarget => {
     const userInfo = {
       userId: user.userId,
@@ -30,20 +32,25 @@ export default function SearchUser({navigation}) {
       phone: user.phone,
       real_name: user.real_name,
       email: user.email,
+      tokenDevice: user.tokenDevice,
+    };
+    const UserSeen = {
+      ...userTarget,
+      tokenDevice: userTarget.state,
     };
     const roomInfo = {
       roomId: parseInt(
         userTarget.userId.toString() + user.userId.toString(),
         10,
       ),
-      membersId: [userInfo.userId, userTarget.userId],
-      members: [userInfo, userTarget],
+      membersId: [userInfo.userId, UserSeen.userId],
+      members: [userInfo, UserSeen],
       createAt: Date.now(),
     };
     await addDocument('rooms', roomInfo);
     navigation.navigate('ChatRoom', {
       roomsData: roomInfo,
-      userDisplay: userTarget,
+      userDisplay: UserSeen,
     });
   };
   return (
