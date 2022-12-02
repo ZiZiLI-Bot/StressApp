@@ -4,6 +4,7 @@ import STText from '../../components/STComponents/STText';
 import BackIcon from '../../components/BackIcon';
 import {Avatar, Button} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
+import MapView from 'react-native-maps';
 
 export default function ExpertsContent({route, navigation}) {
   const {data, isDoctor} = route.params;
@@ -39,6 +40,17 @@ export default function ExpertsContent({route, navigation}) {
               ? `Đơn vị công tác: ${data.address}`
               : `Địa chỉ: ${data.address}`}
           </STText>
+        </View>
+        <View className="flex-1 bg-white items-center justify-center">
+          <MapView
+            region={{
+              latitude: 20.96203953571715,
+              longitude: 105.74688518042362,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }}
+            className="w-full h-60"
+          />
         </View>
       </ScrollView>
       <View className="w-full h-16 bg-white flex-row items-center justify-around">
