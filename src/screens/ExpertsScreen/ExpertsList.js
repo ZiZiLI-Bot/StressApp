@@ -4,11 +4,13 @@ import {Avatar, TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import STText from '../../components/STComponents/STText';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import BackIcon from '../../components/BackIcon';
 
 const dataDoctor = [
   {
     id: 0,
     name: 'Nguyễn Đình Nam',
+    localMap: [20.96203953571715, 105.74688518042362],
     avatar:
       'https://lh3.googleusercontent.com/a/ALm5wu2GHxgfvHgDZ7Z89gK4QYfXj2MFJtxVQPO24OvFqw=s96-c',
     address: 'Chuyên khoa tâm lý bệnh viện đại học Phenikaa',
@@ -20,12 +22,14 @@ const dataOffice = [
     id: 2,
     avatar: 'https://day.js.org/img/logo.png',
     name: 'Bệnh viện đại học Phenikaa',
+    localMap: [20.96203953571715, 105.74688518042362],
     address: 'Yên Nghĩa - Hà Đông - Hà Nội',
   },
   {
     id: 3,
     avatar: 'https://day.js.org/img/logo.png',
     name: 'Viện Sức khỏe Tâm thần Quốc gia',
+    localMap: [21.00332143404622, 105.8390376155651],
     address: '78 Giải Phóng, Phương Đình, Đống Đa, Hà Nội',
   },
 ];
@@ -34,17 +38,11 @@ export default function ExpertsScreen({navigation}) {
   return (
     <SafeAreaView className="pt-4 px-3 w-full h-full bg-white">
       <ScrollView className="bg-white">
-        <View className="w-full h-16 flex-row items-center justify-between">
+        <View className="w-full h-16 flex-row items-center">
+          <BackIcon className="mr-3" onPress={() => navigation.goBack()} />
           <STText font="bold" className="text-2xl text-black">
             Các cơ sở chuyên môn
           </STText>
-          <View>
-            <TouchableOpacity
-              className="bg-gray-200 w-12 h-12 flex justify-center items-center rounded-xl"
-              onPress={() => navigation.openDrawer()}>
-              <Icon name="menu-open" size={30} color="#5669ff" />
-            </TouchableOpacity>
-          </View>
         </View>
         <View>
           <STText font="bold" className="text-2xl text-black">

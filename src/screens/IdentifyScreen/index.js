@@ -1,9 +1,18 @@
 import React, {useEffect} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, TouchableOpacity, View} from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import BackIcon from '../../components/BackIcon';
 import STText from '../../components/STComponents/STText';
 import {getData} from '../../helpers/Store';
+
+const advertisement = [
+  'https://xuonginhanoi.vn/files/to-toi-bao-hiem-nhan-tho-04.jpg',
+  'https://xuonginhanoi.vn/files/to-toi-bao-hiem-nhan-tho-02(1).jpg',
+  'https://bizweb.dktcdn.net/100/332/012/articles/mau-poster-quang-cao-phong-nha-khoa-dep.jpg',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-n9C9IJAX6A1_MAZ_xd4DtMQZvlqFJquU6rvl4OVK8EtCFNUfwcwv7h_UveWA92jaH7s&usqp=CAU',
+];
 
 export default function IdentifyScreen({navigation}) {
   const [data, setData] = React.useState();
@@ -33,17 +42,11 @@ export default function IdentifyScreen({navigation}) {
   }, []);
   return (
     <SafeAreaView className="pt-3 px-4 bg-white h-full">
-      <View className="w-full h-16 flex-row items-center justify-between">
+      <View className="w-full h-16 flex-row items-center">
+        <BackIcon className="mr-3" onPress={() => navigation.goBack()} />
         <STText font="bold" className="text-2xl text-black">
           Nhận định cơ bản
         </STText>
-        <View>
-          <TouchableOpacity
-            className="bg-gray-200 w-12 h-12 flex justify-center items-center rounded-xl"
-            onPress={() => navigation.openDrawer()}>
-            <Icon name="menu-open" size={30} color="#5669ff" />
-          </TouchableOpacity>
-        </View>
       </View>
       <View className="mt-10">
         {data ? (
@@ -66,6 +69,24 @@ export default function IdentifyScreen({navigation}) {
             để chúng tôi có thể đưa ra kết luận cho bạn
           </STText>
         )}
+      </View>
+      <View className="mt-10">
+        <Carousel
+          loop
+          width={Dimensions.get('window').width}
+          autoPlay={true}
+          data={advertisement}
+          scrollAnimationDuration={1000}
+          renderItem={({item}) => (
+            <View>
+              <Image
+                source={{uri: item}}
+                resizeMode="cover"
+                className="w-full h-32"
+              />
+            </View>
+          )}
+        />
       </View>
     </SafeAreaView>
   );
