@@ -4,7 +4,7 @@ import STText from '../../components/STComponents/STText';
 import BackIcon from '../../components/BackIcon';
 import {Avatar, Button} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
-import MapView from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 
 export default function ExpertsContent({route, navigation}) {
   const {data, isDoctor} = route.params;
@@ -44,17 +44,27 @@ export default function ExpertsContent({route, navigation}) {
         <View className="flex-1 bg-white items-center justify-center">
           <MapView
             region={{
-              latitude: 20.96203953571715,
-              longitude: 105.74688518042362,
+              latitude: data.localMap[0],
+              longitude: data.localMap[1],
               latitudeDelta: 0.015,
               longitudeDelta: 0.0121,
             }}
-            className="w-full h-60"
-          />
+            className="w-full h-60">
+            <Marker
+              coordinate={{
+                latitude: data.localMap[0],
+                longitude: data.localMap[1],
+              }}
+            />
+          </MapView>
         </View>
       </ScrollView>
       <View className="w-full h-16 bg-white flex-row items-center justify-around">
-        <Button mode="contained">Tư vấn Online</Button>
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('PremiumScreen')}>
+          Tư vấn Online
+        </Button>
         <Button mode="contained" onPress={bookOffice}>
           Đặt lịch khám
         </Button>

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {Dimensions, Image, TouchableOpacity, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {Button, RadioButton} from 'react-native-paper';
 import STText from '../../components/STComponents/STText';
@@ -10,10 +10,18 @@ import {useNavigation} from '@react-navigation/native';
 import {useEffect} from 'react';
 import {storeData} from '../../helpers/Store';
 import QuestionsApi from '../../helpers/API/QuestionsAPI';
+import Carousel from 'react-native-reanimated-carousel';
 
 const sort = (a, b) => {
   return a.id - b.id;
 };
+
+const advertisement = [
+  'https://xuonginhanoi.vn/files/to-toi-bao-hiem-nhan-tho-04.jpg',
+  'https://xuonginhanoi.vn/files/to-toi-bao-hiem-nhan-tho-02(1).jpg',
+  'https://bizweb.dktcdn.net/100/332/012/articles/mau-poster-quang-cao-phong-nha-khoa-dep.jpg',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-n9C9IJAX6A1_MAZ_xd4DtMQZvlqFJquU6rvl4OVK8EtCFNUfwcwv7h_UveWA92jaH7s&usqp=CAU',
+];
 
 export default function QuizScreen({route}) {
   const {item} = route.params;
@@ -203,6 +211,24 @@ const Quiz = ({dataQuiz, resultJudge}) => {
               <Button mode="contained" className="mt-4" onPress={nextQuiz}>
                 Next
               </Button>
+              <View className="mt-32">
+                <Carousel
+                  loop
+                  width={Dimensions.get('window').width}
+                  autoPlay={true}
+                  data={advertisement}
+                  scrollAnimationDuration={1000}
+                  renderItem={({item}) => (
+                    <View>
+                      <Image
+                        source={{uri: item}}
+                        resizeMode="cover"
+                        className="w-full h-32"
+                      />
+                    </View>
+                  )}
+                />
+              </View>
             </View>
           ),
       )}

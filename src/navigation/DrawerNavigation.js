@@ -16,8 +16,6 @@ export default function AppNavigation() {
       drawerContent={props => <DrawerContainer {...props} />}
       screenOptions={{
         headerShown: false,
-        statusBarColor: 'white',
-        statusBarStyle: 'dark',
         drawerLabelStyle: {marginLeft: -20},
       }}>
       <Drawer.Screen
@@ -30,7 +28,7 @@ export default function AppNavigation() {
           title: 'Trang chủ',
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="DiaryScreen"
         component={DiaryScreen}
         options={{
@@ -67,7 +65,7 @@ export default function AppNavigation() {
           ),
           title: 'Nhận định cơ bản',
         }}
-      />
+      /> */}
       {/* <Drawer.Screen
         name="UserInfo"
         component={UserInfo}
