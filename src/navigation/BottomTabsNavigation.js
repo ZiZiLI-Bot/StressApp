@@ -7,6 +7,7 @@ import ERConnect from '../screens/ERConnect/ChatList';
 import ExpertsScreen from '../screens/ExpertsScreen/ExpertsList';
 import CourseList from '../screens/CourseScreen/CourseList';
 import PodCastScreen from '../screens/PodCastScreen';
+import SettingScreen from '../screens/SettingScreen';
 
 const Tab = createBottomTabNavigator();
 export default function BottomTabsNavigation() {
@@ -77,6 +78,16 @@ export default function BottomTabsNavigation() {
         options={{
           tabBarIcon: ({color, size}) => (
             <Icon name="podcast" color={color} size={27} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="setting"
+        component={SettingScreen}
+        options={{
+          title: 'Cài đặt',
+          tabBarIcon: ({color, size}) => (
+            <Icon name="cog-outline" color={color} size={27} />
           ),
         }}
       />

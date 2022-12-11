@@ -24,7 +24,7 @@ const podcastHighlights = [
   {
     id: 0,
     name: 'Wingman Podcast 2 - Giao Tiếp Cho Người Hướng Nội',
-    link: 'http://14.225.205.132:8000/files/1670214129525-Podcast6.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625763332-podcast6.mp3',
     owner: 'Wingman',
     image:
       'https://i.ytimg.com/vi/iYPuqDguRro/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCcZ1fxVfm6LTZkXVmsZW7922NnKQ',
@@ -32,7 +32,7 @@ const podcastHighlights = [
   {
     id: 1,
     name: 'Ikigai - Cách tôi đã tìm ra ý nghĩa cuộc sống của mình',
-    link: 'http://14.225.205.132:8000/files/1670214135162-Podcast7.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625770386-podcast7.mp3',
     owner: 'Hieu Nguyen',
     image:
       'https://i.ytimg.com/vi/KYQNUZrvnew/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDD1-rH_zgtHKogcyuguxFnn3_7TA',
@@ -40,7 +40,7 @@ const podcastHighlights = [
   {
     id: 2,
     name: 'AUDIO - PODCAST | #6: chất liệu của cuộc sống "CẢM XÚC"',
-    link: 'http://14.225.205.132:8000/files/1670214142540-Podcast8.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625773734-podcast8.mp3',
     owner: 'Unite-D Team Official',
     image:
       'https://i.ytimg.com/vi/LeaDN0OxCtw/hq720.jpg?sqp=-oaymwE2COgCEMoBSFXyq4qpAygIARUAAIhCGAFwAcABBvABAfgB_gmAAtAFigIMCAAQARhhIBMofzAP&rs=AOn4CLDQDArGjPZ4ZCRyd1dMANGXWk7hjg',
@@ -51,7 +51,7 @@ const podcastList = [
   {
     id: 0,
     name: 'Một cuộc đời đáng sống',
-    link: 'http://14.225.205.132:8000/files/1670213900859-Podcast1.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625661044-podcast1.mp3',
     owner: 'Hieu Nguyen',
     image:
       'https://i.ytimg.com/vi/gGLxPY3qDYY/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDkbxlC-rJTnHybG_HoHc5U0v92lQ',
@@ -59,7 +59,7 @@ const podcastList = [
   {
     id: 1,
     name: 'Vực dậy sau những ngày mệt mỏi và mất động lực | Podcast #01',
-    link: 'http://14.225.205.132:8000/files/1670213918130-Podcast2.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625664451-podcast2.mp3',
     owner: 'The Hanoi Chamomile',
     image:
       'https://i.ytimg.com/vi/4AIhLv-qtYk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC2pDpATOgSebDUzJP4eeJ79sISww',
@@ -67,7 +67,7 @@ const podcastList = [
   {
     id: 2,
     name: 'Đừng Ước Cuộc Đời Người Khác | Dan Foolish',
-    link: 'http://14.225.205.132:8000/files/1670213924410-Podcast3.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625666046-podcast3.mp3',
     owner: 'Dan Foolish',
     image:
       'https://i.ytimg.com/vi/llPc0mTWoBk/hq720.jpg?sqp=-oaymwEcCOgCEMoBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCr4hwDVacTeM6EnxZRgYXv2uDfUg',
@@ -75,14 +75,14 @@ const podcastList = [
   {
     id: 3,
     name: 'Thử bao nhiều lần trước khi dừng lại? - Vũ. | Have a Sip EP93',
-    link: 'http://14.225.205.132:8000/files/1670213929262-Podcast4.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625668138-podcast4.mp3',
     owner: 'Vietcetera',
     image: 'https://i.ytimg.com/vi/8JTAh8VoO18/0.jpg',
   },
   {
     id: 4,
     name: 'Người giỏi thực sự, sớm đã chọn lối sống tối giản | Sách Tiểu sử Steve Jobs',
-    link: 'http://14.225.205.132:8000/files/1670214127248-Podcast5.mp3',
+    link: 'http://14.225.205.132:8000/files/1670625755176-podcast5.mp3',
     owner: 'Better Version',
     image: 'https://i.ytimg.com/vi/WnhhO06xMdo/0.jpg',
   },

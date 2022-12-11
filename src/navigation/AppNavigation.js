@@ -17,8 +17,9 @@ import PostsScreen from '../screens/PostsScreen';
 import PremiumScreen from '../screens/PremiumScreen';
 import QuizScreen from '../screens/QuizScreen';
 import QuizListScreen from '../screens/QuizScreen/QuizListScreen';
+import NotificationScreen from '../screens/SettingScreen/NotificationScreen';
+import UserInfoScreen from '../screens/SettingScreen/UserInfoScreen';
 import BottomTabsNavigation from './BottomTabsNavigation';
-import DrawerNavigation from './DrawerNavigation';
 
 export default function AppNavigation() {
   const Stack = createNativeStackNavigator();
@@ -48,6 +49,11 @@ export default function AppNavigation() {
         <Stack.Screen name="QuizListScreen" component={QuizListScreen} />
         <Stack.Screen name="CourseDetail" component={CourseDetail} />
         <Stack.Screen name="PremiumScreen" component={PremiumScreen} />
+        <Stack.Screen name="UserInfoScreen" component={UserInfoScreen} />
+        <Stack.Screen
+          name="NotificationScreen"
+          component={NotificationScreen}
+        />
         <Stack.Screen
           name="NewspaperListScreen"
           component={NewspaperListScreen}

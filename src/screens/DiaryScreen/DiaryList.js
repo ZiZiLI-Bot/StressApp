@@ -10,6 +10,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import STText from '../../components/STComponents/STText';
 import {getDiaryById} from '../../reducers';
 import 'dayjs/locale/vi';
+import Lottie from 'lottie-react-native';
+import BackIcon from '../../components/BackIcon';
 
 export default function DiaryScreen({navigation}) {
   const {diary, user} = useSelector(state => state);
@@ -24,17 +26,11 @@ export default function DiaryScreen({navigation}) {
   }, [refreshing]);
   return (
     <SafeAreaView className="pt-3 px-4 bg-white h-full relative">
-      <View className="w-full h-16 flex-row items-center justify-between">
-        <STText font="bold" className="text-2xl text-black">
+      <View className="w-full h-16 flex-row items-center">
+        <BackIcon onPress={() => navigation.goBack()} />
+        <STText font="bold" className="text-2xl ml-2 text-black">
           Nhật ký cá nhân
         </STText>
-        <View>
-          <TouchableOpacity
-            className="bg-gray-200 w-12 h-12 flex justify-center items-center rounded-xl"
-            onPress={() => navigation.openDrawer()}>
-            <Icon name="menu-open" size={30} color="#5669ff" />
-          </TouchableOpacity>
-        </View>
       </View>
       <ScrollView
         className="bg-white"
@@ -56,6 +52,15 @@ export default function DiaryScreen({navigation}) {
                 <DiaryContainer diary={diary.diary} navigation={navigation} />
               ) : (
                 <View className="w-full h-96 flex-1 justify-center items-center">
+                  <Lottie
+                    source={require('../../../assets/lottieFile/no-results.json')}
+                    autoPlay
+                    autoSize
+                    loop={false}
+                    speed={1.5}
+                    className="w-72 h-72"
+                    resizeMode="cover"
+                  />
                   <STText font="bold" className="text-2xl text-black">
                     Chưa có bản ghi nào
                   </STText>

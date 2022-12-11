@@ -18,6 +18,15 @@ const uploadImageToFirebase = async image => {
   }
 };
 
+const uploadImageByCropImage = async image => {
+  const reference = storage().ref('images/' + image.id);
+  await reference.putFile(image.path);
+  const url = await storage()
+    .ref('images/' + image.id)
+    .getDownloadURL();
+  return url;
+};
+
 const initialState = {
   profileId: null,
   tokenDevice: null,
@@ -127,6 +136,19 @@ export const UserReducer = createSlice({
       .addCase(SYlogout.rejected, state => {
         state.isLoading = false;
         state.isLogin = false;
+      })
+      .addCase(updateProfile.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.name = action.payload?.name;
+        state.phone = action.payload?.phone;
+        state.real_name = action.payload?.real_name;
+      })
+      .addCase(updateAvatar.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.avatar = action.payload?.avatar;
       });
   },
 });
@@ -222,3 +244,25 @@ export const SYlogout = createAsyncThunk('user/logout', async () => {
   await storeData('token', '');
   return initialState;
 });
+
+export const updateProfile = createAsyncThunk(
+  '/user/update/profile',
+  async data => {
+    const res = await AuthApi.updateProfile(data);
+    return res.data;
+  },
+);
+
+export const updateAvatar = createAsyncThunk(
+  '/user/update/avatar',
+  async data => {
+    console.log('data', data);
+    const urlImage = await uploadImageByCropImage(data.avatar);
+    const dataImage = {
+      id: data.profileId,
+      avatar: urlImage,
+    };
+    const res = await AuthApi.updateProfile(dataImage);
+    return res.data;
+  },
+);
