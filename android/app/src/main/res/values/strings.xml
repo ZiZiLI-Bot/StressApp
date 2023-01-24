@@ -3,4 +3,5 @@
     <string name="facebook_app_id">3304158889905537</string>
     <string name="fb_login_protocol_scheme">fb3304158889905537</string>
     <string name="facebook_client_token">62380ae31e06a00d9484fc7d43f4872f</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">lDYq_oGPAKBAR8EvQZ36l1iU-P5fI-A6JgeiK</string>
 </resources>

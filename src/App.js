@@ -12,8 +12,9 @@ import {ShowNotification} from './helpers/Notification';
 import store from './helpers/Redux/store';
 import Navigation from './navigation';
 import theme from './theme';
+import codePush from 'react-native-code-push';
 
-export default function App() {
+const App = () => {
   useEffect(() => {
     const unSubscribe = messaging().onMessage(async remoteMessage => {
       console.log('message', remoteMessage);
@@ -73,5 +74,7 @@ export default function App() {
       </StoreProvider>
     </GestureHandlerRootView>
   );
-}
+};
 LogBox.ignoreAllLogs();
+
+export default codePush(App);
